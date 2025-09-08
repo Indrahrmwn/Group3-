@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+/* custom tambahan kalau butuh */
+body {
+  @apply bg-white text-gray-900;
+}
+
+button {
+  @apply px-4 py-2 rounded-lg font-medium;
+}
