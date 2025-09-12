@@ -4,7 +4,7 @@ import Gambar2 from "../assets/Gambar Website/hoki.jpg";
 export default function LandingPage() {
   return (
     <>
-      <section className="pt-28 px-8 md:px-16 py-12 bg-white">
+      <section className="pt-40 px-8 md:px-16 py-12 bg-white">
         {/* Bagian Atas */}
         <div className="grid md:grid-cols-2 gap-8 items-center">
           {/* Kiri: Teks */}
@@ -21,10 +21,10 @@ export default function LandingPage() {
               pengalaman — cukup bawa rasa ingin tahu dan keberanian.
             </p>
             <button
-              className=" bg-gray-200 text-gray-800 px-6 py-2 rounded-md w-fit mt-4
+              className=" bg-red-700 text-white px-6 py-2 rounded-md w-fit mt-4
               transition-all duration-300 ease-out
               font-bold
-              hover:scale-105 hover:shadow-lg hover:bg-gray-300
+              hover:scale-105 hover:shadow-lg hover:bg-red-400
               focus:outline-none active:scale-95"
             >
               Bergabung Sekarang
@@ -41,28 +41,41 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Bagian Bawah: Apa yang Kamu Dapat */}
+        {/* Bagian Bawah: Apa yang Kamu Dapat (negative margins) */}
         <div className="mt-20">
-          <h2 className="text-2xl font-bold mb-8">Apa yang Kamu Dapat?</h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-gray-200 rounded-3xl shadow-md p-6 hover:shadow-lg transition">
-              <h3 className="font-bold text-lg mb-2">Skill Akting Praktis</h3>
-              <p className="text-sm text-gray-700">
-                Teknik vokal, blocking, ekspresi, hingga kepercayaan diri di
-                panggung & kamera.
-              </p>
-            </div>
-            <div className="bg-gray-200 rounded-3xl shadow-md p-6 hover:shadow-lg transition">
-              <h3 className="font-bold text-lg mb-2">Jejaring Kreatif</h3>
-              <p className="text-sm text-gray-700">
-                Kenalan dengan komunitas film, penulis, dan seniman lokal.
-              </p>
-            </div>
-            <div className="bg-gray-200 rounded-3xl shadow-md p-6 hover:shadow-lg transition">
-              <h3 className="font-bold text-lg mb-2">Portofolio Karya</h3>
-              <p className="text-sm text-gray-700">
-                Ikut pementasan & produksi, dokumentasi rapi untuk CV/Beasiswa.
-              </p>
+          {/* offset padding parent supaya merah full width */}
+          <div className="bg-red-700 -mx-8 md:-mx-16 py-35">
+            <div className="max-w-7xl mx-auto px-6">
+              <h2 className="text-2xl font-bold mb-8 text-white">
+                Apa yang Kamu Dapat?
+              </h2>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="bg-gray-200 rounded-3xl shadow-md p-6 hover:shadow-lg transition">
+                  <h3 className="font-bold text-lg mb-2">
+                    Skill Akting Praktis
+                  </h3>
+                  <p className="text-sm text-gray-700">
+                    Teknik vokal, blocking, ekspresi, hingga kepercayaan diri di
+                    panggung & kamera.
+                  </p>
+                </div>
+
+                <div className="bg-gray-200 rounded-3xl shadow-md p-6 hover:shadow-lg transition">
+                  <h3 className="font-bold text-lg mb-2">Jejaring Kreatif</h3>
+                  <p className="text-sm text-gray-700">
+                    Kenalan dengan komunitas film, penulis, dan seniman lokal.
+                  </p>
+                </div>
+
+                <div className="bg-gray-200 rounded-3xl shadow-md p-6 hover:shadow-lg transition">
+                  <h3 className="font-bold text-lg mb-2">Portofolio Karya</h3>
+                  <p className="text-sm text-gray-700">
+                    Ikut pementasan & produksi, dokumentasi rapi untuk
+                    CV/Beasiswa.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -82,7 +95,9 @@ export default function LandingPage() {
             />
             <div className="p-4">
               <p className="font-bold text-gray-800 mb-1">Tiket Teater</p>
-              <p className="text-right font-semibold text-gray-900">Rp.40.000</p>
+              <p className="text-right font-semibold text-gray-900">
+                Rp.40.000
+              </p>
             </div>
           </div>
         </div>
@@ -104,12 +119,24 @@ export default function LandingPage() {
           <div>
             <h3 className="font-bold text-lg mb-4">METODE PEMBAYARAN</h3>
             <div className="grid grid-cols-3 gap-2 text-sm">
-              <div className="bg-white text-black text-center p-2 rounded">Mandiri</div>
-              <div className="bg-white text-black text-center p-2 rounded">BCA</div>
-              <div className="bg-white text-black text-center p-2 rounded">BNI</div>
-              <div className="bg-white text-black text-center p-2 rounded">BRI</div>
-              <div className="bg-white text-black text-center p-2 rounded">Visa</div>
-              <div className="bg-white text-black text-center p-2 rounded">OVO</div>
+              <div className="bg-white text-black text-center p-2 rounded">
+                Mandiri
+              </div>
+              <div className="bg-white text-black text-center p-2 rounded">
+                BCA
+              </div>
+              <div className="bg-white text-black text-center p-2 rounded">
+                BNI
+              </div>
+              <div className="bg-white text-black text-center p-2 rounded">
+                BRI
+              </div>
+              <div className="bg-white text-black text-center p-2 rounded">
+                Visa
+              </div>
+              <div className="bg-white text-black text-center p-2 rounded">
+                OVO
+              </div>
             </div>
           </div>
 

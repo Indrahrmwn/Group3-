@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
-import berita1 from "../assets/tiket/berita-1.png"; // ✅ import bener
+import berita1 from "../assets/tiket/berita-1.png";
 
 export default function TicketStep({ onNext }) {
   const [date, setDate] = useState("");
   const [quantity, setQuantity] = useState(1);
 
-  // kalau date sudah dipilih, otomatis panggil onNext
   useEffect(() => {
     if (date) {
       onNext?.({ date, quantity });
