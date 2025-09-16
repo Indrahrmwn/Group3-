@@ -6,7 +6,7 @@ export default function TicketPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex gap-6 p-6">
+    <div className="flex gap-6 p-6 mt-30 max-w-6xl mx-auto">
       {/* Step pilih tiket */}
       <div className="flex-1">
         <TicketStep onNext={(data) => console.log("Data tiket:", data)} />

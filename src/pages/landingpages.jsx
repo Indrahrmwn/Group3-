@@ -1,176 +1,278 @@
-import GambarLanding from "../assets/Gambar Website/gambar-landing.jpg";
+// src/pages/LandingPage.jsx
+import GambarLanding from "../assets/Gambar Website/orang.jpg";
 import Gambar2 from "../assets/Gambar Website/hoki.jpg";
+import BackgroundGabung from "../assets/Gambar Website/bergabung.jpg";
 
 export default function LandingPage() {
+  // data komentar dummy
+  const comments = [
+    {
+      name: "jamaludin",
+      date: "29-maret-2024",
+      comment:
+        "Lokakarya ini telah membantu saya mengembangkan kreativitas. Saya merasa lebih percaya diri di atas panggung daripada sebelumnya!",
+      stars: 5,
+    },
+    {
+      name: "jamaludin",
+      date: "29-maret-2024",
+      comment:
+        "Lokakarya ini telah membantu saya mengembangkan kreativitas. Saya merasa lebih percaya diri di atas panggung daripada sebelumnya!",
+      stars: 5,
+    },
+    {
+      name: "jamaludin",
+      date: "29-maret-2024",
+      comment:
+        "Lokakarya ini telah membantu saya mengembangkan kreativitas. Saya merasa lebih percaya diri di atas panggung daripada sebelumnya!",
+      stars: 5,
+    },
+  ];
+
   return (
     <>
-      <section className="pt-40 px-8 md:px-16 py-12 bg-white">
-        {/* Bagian Atas */}
-        <div className="grid md:grid-cols-2 gap-8 items-center">
-          {/* Kiri: Teks */}
-          <div className="flex flex-col gap-4">
-            <div className="inline-block bg-gray-200 text-gray-700 text-sm px-4 py-1 rounded-full">
+      {/* Hero Section */}
+      <section
+        className="relative h-screen flex items-center bg-cover bg-center"
+        style={{ backgroundImage: `url(${GambarLanding})` }}
+      >
+        <div className="max-w-7xl mx-auto px-8 w-full">
+          <div className="flex flex-col gap-4 items-start text-left">
+            <div className="inline-block bg-red-700 text-white text-sm px-4 py-1 rounded-full">
               Komunitas Teater • Terbuka untuk Remaja
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold leading-snug">
+            <h1 className="text-4xl md:text-5xl font-bold leading-snug text-white">
               Temukan Panggungmu <br /> bersama Remaja Tengah
             </h1>
-            <p className="text-gray-700 text-sm md:text-base leading-relaxed">
+            <p className="text-white text-sm md:text-base max-w-xl leading-relaxed">
               Kami adalah komunitas teater yang mewadahi remaja untuk belajar
               akting, menulis naskah, dan mementaskan karya. Tanpa syarat
               pengalaman — cukup bawa rasa ingin tahu dan keberanian.
             </p>
             <button
               className=" bg-red-700 text-white px-6 py-2 rounded-md w-fit mt-4
-              transition-all duration-300 ease-out
-              font-bold
-              hover:scale-105 hover:shadow-lg hover:bg-red-400
-              focus:outline-none active:scale-95"
+        transition-all duration-300 ease-out
+        font-bold
+        hover:scale-105 hover:shadow-lg hover:bg-red-400
+        focus:outline-none active:scale-95"
             >
               Bergabung Sekarang
             </button>
           </div>
-
-          {/* Kanan: Gambar */}
-          <div className="flex justify-center">
-            <img
-              src={GambarLanding}
-              alt="Remaja Tengah"
-              className="rounded-2xl w-full max-w-md object-cover"
-            />
-          </div>
         </div>
+      </section>
 
-        {/* Bagian Bawah: Apa yang Kamu Dapat (negative margins) */}
-        <div className="mt-20">
-          {/* offset padding parent supaya merah full width */}
-          <div className="bg-red-700 -mx-8 md:-mx-16 py-35">
-            <div className="max-w-7xl mx-auto px-6">
-              <h2 className="text-2xl font-bold mb-8 text-white">
-                Apa yang Kamu Dapat?
-              </h2>
+      {/* Bagian bawah */}
+      <section className="bg-white px-20 md:px-16">
+        <div className="bg-red-700 -mx-8 md:-mx-16 py-20  py-24 md:py-32">
+          <div className="max-w-7xl mx-auto px-6">
+            <h2 className="text-2xl font-bold mb-8 text-white">
+              Apa yang Kamu Dapat?
+            </h2>
 
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className="bg-gray-200 rounded-3xl shadow-md p-6 hover:shadow-lg transition">
-                  <h3 className="font-bold text-lg mb-2">
-                    Skill Akting Praktis
-                  </h3>
-                  <p className="text-sm text-gray-700">
-                    Teknik vokal, blocking, ekspresi, hingga kepercayaan diri di
-                    panggung & kamera.
-                  </p>
-                </div>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="bg-gray-200 rounded-3xl shadow-md p-6 hover:shadow-lg transition">
+                <h3 className="font-bold text-lg mb-2">Skill Akting Praktis</h3>
+                <p className="text-sm text-gray-700">
+                  Teknik vokal, blocking, ekspresi, hingga kepercayaan diri di
+                  panggung & kamera.
+                </p>
+              </div>
 
-                <div className="bg-gray-200 rounded-3xl shadow-md p-6 hover:shadow-lg transition">
-                  <h3 className="font-bold text-lg mb-2">Jejaring Kreatif</h3>
-                  <p className="text-sm text-gray-700">
-                    Kenalan dengan komunitas film, penulis, dan seniman lokal.
-                  </p>
-                </div>
+              <div className="bg-gray-200 rounded-3xl shadow-md p-6 hover:shadow-lg transition">
+                <h3 className="font-bold text-lg mb-2">Jejaring Kreatif</h3>
+                <p className="text-sm text-gray-700">
+                  Kenalan dengan komunitas film, penulis, dan seniman lokal.
+                </p>
+              </div>
 
-                <div className="bg-gray-200 rounded-3xl shadow-md p-6 hover:shadow-lg transition">
-                  <h3 className="font-bold text-lg mb-2">Portofolio Karya</h3>
-                  <p className="text-sm text-gray-700">
-                    Ikut pementasan & produksi, dokumentasi rapi untuk
-                    CV/Beasiswa.
-                  </p>
-                </div>
+              <div className="bg-gray-200 rounded-3xl shadow-md p-6 hover:shadow-lg transition">
+                <h3 className="font-bold text-lg mb-2">Portofolio Karya</h3>
+                <p className="text-sm text-gray-700">
+                  Ikut pementasan & produksi, dokumentasi rapi untuk
+                  CV/Beasiswa.
+                </p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Bagian Beli Tiket */}
+        {/* Beli tiket */}
         <div className="mt-16">
           <h2 className="text-2xl font-bold mb-4">Beli Tiket</h2>
-          <div
-            className="max-w-xs bg-gray-200 rounded-md shadow-md 
-            transform transition-all duration-300 ease-out 
-            hover:scale-105 hover:shadow-xl hover:bg-gray-300"
-          >
-            <img
-              src={Gambar2}
-              alt="Tiket Teater"
-              className="w-full h-40 object-cover rounded-t-md"
-            />
-            <div className="p-4">
-              <p className="font-bold text-gray-800 mb-1">Tiket Teater</p>
-              <p className="text-right font-semibold text-gray-900">
-                Rp.40.000
-              </p>
+
+          <div className="flex justify-start mt-10">
+            <div className="min-w-60 rounded-xl overflow-hidden shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
+              {/* gambar */}
+              <img
+                src={Gambar2}
+                alt="Tiket Teater"
+                className="w-full h-48 object-cover"
+              />
+
+              <div className="bg-red-600 p-4 h-32 flex flex-col justify-between">
+                {/* Judul di kiri atas */}
+                <p className="font-bold text-white">Tiket Teater</p>
+
+                {/* Harga di kanan bawah */}
+                <p className="text-right font-semibold text-white">Rp.40.000</p>
+              </div>
             </div>
           </div>
+        </div>
+
+        {/* Komentar User */}
+        <div className="bg-red-700 -mx-8 md:-mx-16 mt-20 py-12 px-6 md:px-16  py-24 md:py-32">
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-white text-2xl font-bold">Komentar User</h2>
+            <button className="bg-red-800 hover:bg-red-900 text-white px-4 py-2 rounded-md text-sm transition">
+              Lihat Lainnya →
+            </button>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {comments.map((item, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-xl shadow-md p-6 flex flex-col justify-between"
+              >
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center text-xl">
+                    👤
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm">{item.name}</p>
+                    <p className="text-xs text-gray-600">{item.date}</p>
+                  </div>
+                </div>
+
+                <p className="text-sm text-gray-700 mb-4">“{item.comment}”</p>
+
+                <div className="flex text-yellow-400 text-lg">
+                  {Array.from({ length: item.stars }).map((_, i) => (
+                    <span key={i}>★</span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      {/* Section ajakan bergabung */}
+      <section
+        className="relative bg-cover bg-center py-24 md:py-32"
+        style={{
+          backgroundImage: `url(${BackgroundGabung})`,
+          backgroundRepeat: "repeat",
+          backgroundSize: "cover",
+        }}
+      >
+        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 items-center">
+          {/* Kiri: teks */}
+          <div className="space-y-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-black">
+              Bergabunglah dengan Komunitas Remaja Tengah!
+            </h2>
+            <p className="text-gray-800 text-sm md:text-base leading-relaxed">
+              Bebaskan kreativitas dan gairah teater Anda bersama kami. Jadilah
+              bagian dari sesuatu yang luar biasa!
+            </p>
+
+            <div className="flex gap-4 pt-4">
+              <button className="bg-red-700 hover:bg-red-800 text-white px-6 py-2 rounded-md transition duration-300 font-semibold">
+                Mendaftar
+              </button>
+              <button className="bg-gray-300 hover:bg-gray-400 text-black px-6 py-2 rounded-md transition duration-300 font-semibold">
+                Pelajari Lebih Lanjut
+              </button>
+            </div>
+          </div>
+
+          {/* Kanan: bisa kosong atau gambar */}
+          <div className="hidden md:block" />
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-white mt-20">
-        <div className="max-w-7xl mx-auto px-8 py-12 grid md:grid-cols-4 gap-8">
-          {/* Kolom 1 */}
+      <footer className="bg-[#2E3A44] text-white py-12">
+        <div className="max-w-7xl mx-auto px-8 grid md:grid-cols-5 gap-8">
+          {/* Logo */}
+          <div className="md:col-span-1">
+            <img
+              src="/src/assets/Gambar Website/tes.png"
+              alt="Remaja Tengah"
+              className="w-32 h-auto mb-4"
+            />
+          </div>
+
+          {/* Quick Links */}
           <div>
-            <h3 className="font-bold text-lg mb-4">Remaja Tengah</h3>
+            <h3 className="font-bold mb-3">Quick Links</h3>
             <ul className="space-y-2 text-sm">
-              <li>Tentang Remaja Tengah</li>
-              <li>Berita</li>
+              <li>About Us</li>
+              <li>Our Event</li>
+              <li>Get Involved</li>
+              <li>Contact Us</li>
+              <li>FAQs</li>
             </ul>
           </div>
 
-          {/* Kolom 2 */}
+          {/* Connect With Us */}
           <div>
-            <h3 className="font-bold text-lg mb-4">METODE PEMBAYARAN</h3>
-            <div className="grid grid-cols-3 gap-2 text-sm">
-              <div className="bg-white text-black text-center p-2 rounded">
-                Mandiri
-              </div>
-              <div className="bg-white text-black text-center p-2 rounded">
-                BCA
-              </div>
-              <div className="bg-white text-black text-center p-2 rounded">
-                BNI
-              </div>
-              <div className="bg-white text-black text-center p-2 rounded">
-                BRI
-              </div>
-              <div className="bg-white text-black text-center p-2 rounded">
-                Visa
-              </div>
-              <div className="bg-white text-black text-center p-2 rounded">
-                OVO
-              </div>
+            <h3 className="font-bold mb-3">Connect With Us</h3>
+            <ul className="space-y-2 text-sm">
+              <li>Facebook</li>
+              <li>Instagram</li>
+              <li>Youtube</li>
+              <li>Tiktok</li>
+              <li>Whatsapp</li>
+            </ul>
+          </div>
+
+          {/* Stay Update */}
+          <div>
+            <h3 className="font-bold mb-3">Stay Update</h3>
+            <ul className="space-y-2 text-sm">
+              <li>Newsletter</li>
+              <li>Event</li>
+              <li>Workshop</li>
+              <li>Membership</li>
+              <li>Support Us</li>
+            </ul>
+          </div>
+
+          {/* Subscribe */}
+          <div>
+            <h3 className="font-bold mb-3">Subscribe</h3>
+            <p className="text-sm mb-3">
+              Join our newsletter to stay updated our latest event and news
+            </p>
+            <div className="flex gap-2 mb-2">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="px-3 py-2 rounded bg-gray-600 text-white text-sm w-full focus:outline-none"
+              />
+              <button className="px-4 py-2 bg-gray-200 text-black rounded text-sm hover:bg-gray-300 transition">
+                Subscribe
+              </button>
             </div>
-          </div>
-
-          {/* Kolom 3 */}
-          <div>
-            <h3 className="font-bold text-lg mb-4">BANTUAN & PANDUAN</h3>
-            <ul className="space-y-2 text-sm">
-              <li>Pusat Bantuan Remaja Tengah</li>
-              <li>Syarat & Ketentuan</li>
-              <li>Kebijakan Privasi</li>
-            </ul>
-          </div>
-
-          {/* Kolom 4 */}
-          <div>
-            <h3 className="font-bold text-lg mb-4">FOLLOW US</h3>
-            <div className="flex gap-4 mb-4">
-              <span>🌐</span>
-              <span>🐦</span>
+            <p className="text-xs text-gray-300">
+              Enter your email. By subscribing, you agree to our Privacy Policy
+              and receive updates.
+            </p>
+            <div className="flex gap-4 mt-4 text-xl">
+              <span>▶️</span>
               <span>📸</span>
-            </div>
-            <h3 className="font-bold text-lg mb-4">UNDUH APLIKASI KAMI</h3>
-            <div className="flex gap-2">
-              <div className="bg-black text-white px-3 py-2 rounded text-xs">
-                App Store
-              </div>
-              <div className="bg-black text-white px-3 py-2 rounded text-xs">
-                Google Play
-              </div>
+              <span>🎵</span>
+              <span>👍</span>
+              <span>💬</span>
             </div>
           </div>
         </div>
-        <div className="bg-gray-800 text-center py-4 text-sm">
-          ©2025 Auto360 | All Rights Reserved
+
+        <div className="mt-8 border-t border-gray-500 pt-4 text-center text-xs text-gray-300">
+          © 2025 Remaja Tengah. All Right Reserved
         </div>
       </footer>
     </>

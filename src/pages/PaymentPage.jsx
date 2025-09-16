@@ -7,7 +7,7 @@ export default function PaymentPage() {
   const [selected, setSelected] = useState(null);
 
   return (
-    <div className="flex max-w-6xl mx-auto p-6 gap-6">
+    <div className="flex max-w-6xl mx-auto p-6 gap-6 mt-30">
       <div className="flex-1 bg-gray-50 p-6 rounded-xl">
         {!selected ? (
           <PaymentStep setSelected={setSelected} />

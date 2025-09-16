@@ -1,8 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Gambar from "../assets/Gambar Website/undraw_people_ka7y.png";
+import { motion } from "framer-motion";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -15,45 +19,64 @@ export default function Login() {
   };
 
   const handleRegister = () => {
-    console.log("Navigate to registration");
+    navigate("/register");
   };
 
   return (
-    <div className="bg-white grid justify-items-center items-start w-screen h-screen">
-      <div className="bg-white overflow-hidden w-full max-w-[1459px] h-full relative">
-        <div className="absolute w-[889px] h-[940px] top-[-63px] -left-14">
-          <div className="absolute w-[413px] h-[45px] top-[722px] left-[474px] bg-[#c53030] rounded-[50px] rotate-[44.50deg]" />
+    <div className="bg-white grid grid-cols-2 w-screen h-screen">
+      {/* Panel merah kiri (form) */}
+      <motion.div
+        key="loginForm"
+        initial={{ x: "-100%", opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        exit={{ x: "100%", opacity: 0 }}
+        transition={{ duration: 0.6, ease: "easeInOut" }}
+        className="bg-[#c53030] flex flex-col justify-center px-20 relative"
+      >
+        <h1 className="text-white text-3xl font-bold mb-6">Login Akun</h1>
 
-          <div className="absolute w-[681px] h-[50px] top-[308px] left-52 bg-white rounded-2xl" />
-
-          <div className="absolute w-[559px] h-full top-[63px] left-14 bg-[#c53030]" />
-
-          <form onSubmit={handleSubmit} className="contents">
-            <label className="absolute w-[247px] top-[285px] left-[165px] font-semibold text-white text-base">
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label className="block font-semibold text-white text-base mb-1">
               Masukan Email atau Username
             </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="absolute w-[342px] h-[47px] top-[313px] left-[165px] bg-white rounded-xl px-3 text-black focus:outline-none focus:ring-2 focus:ring-white"
+              className="w-full h-[47px] bg-white rounded-xl px-3 text-black focus:outline-none focus:ring-4 focus:ring-[#f87171] shadow-md transition-all"
               required
             />
+          </div>
 
-            <label className="absolute w-[247px] top-[382px] left-[165px] font-semibold text-white text-base">
+          <div>
+            <label className="block font-semibold text-white text-base mb-1">
               Masukan Password
             </label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="absolute w-[342px] h-[47px] top-[410px] left-[165px] bg-white rounded-xl px-3 text-black focus:outline-none focus:ring-2 focus:ring-white"
+              className="w-full h-[47px] bg-white rounded-xl px-3 text-black focus:outline-none focus:ring-4 focus:ring-[#f87171] shadow-md transition-all"
               required
             />
+          </div>
 
+          <div className="flex items-center text-white font-semibold space-x-2 text-base">
+            <span>Belum Punya Akun?</span>
+            <button
+              type="button"
+              onClick={handleRegister}
+              className="hover:underline hover:text-gray-200 transition-colors"
+            >
+              Daftar Sekarang
+            </button>
+          </div>
+
+          <div className="flex space-x-4 pt-4">
             <button
               type="submit"
-              className="absolute w-[116px] h-[47px] top-[551px] left-[201px] bg-white rounded-[30px] hover:bg-gray-100 transition-colors flex items-center justify-center"
+              className="px-8 py-2 bg-white text-[#c53030] font-semibold rounded-[30px] hover:bg-gray-100 hover:scale-105 transition-transform shadow"
             >
               Masuk
             </button>
@@ -61,37 +84,18 @@ export default function Login() {
             <button
               type="button"
               onClick={handleCancel}
-              className="absolute w-[116px] h-[47px] top-[551px] left-[348px] bg-white rounded-[30px] hover:bg-gray-100 transition-colors flex items-center justify-center"
+              className="px-8 py-2 bg-white text-[#c53030] font-semibold rounded-[30px] hover:bg-gray-100 hover:scale-105 transition-transform shadow"
             >
               Batal
             </button>
-          </form>
-
-          <div className="absolute w-[168px] top-[484px] left-[183px] font-semibold text-white text-base">
-            Belum Punya Akun ?
           </div>
+        </form>
+      </motion.div>
 
-          <button
-            type="button"
-            onClick={handleRegister}
-            className="absolute top-[484px] left-[351px] font-semibold text-white text-base hover:underline cursor-pointer"
-          >
-            Daftar Sekarang
-          </button>
-        </div>
-
-        <div className="absolute w-[721px] h-[742px] top-[-148px] left-[855px]">
-          <div className="absolute w-[442px] h-[443px] top-0 left-[279px]">
-            <div className="absolute w-[295px] h-[296px] top-0 left-0 bg-[#c53030] rounded-full" />
-            <div className="absolute w-[295px] h-[296px] top-[147px] left-[147px] bg-[#c53030] rounded-full" />
-          </div>
-
-          <img
-            src="/undraw.png" // ganti dengan gambar kamu
-            className="absolute w-[317px] h-[446px] top-[296px] left-0 object-cover"
-            alt="Undraw nice to meet"
-          />
-        </div>
+      {/* Panel gambar kanan (tanpa animasi) */}
+      <div className="flex items-center justify-center relative">
+        <div className="absolute top-0 right-0 w-[150px] h-[150px] bg-[#c53030] rounded-bl-full" />
+        <img src={Gambar} className="w-[300px] h-auto object-contain" alt="Ilustrasi" />
       </div>
     </div>
   );
