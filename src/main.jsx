@@ -16,8 +16,10 @@ function AppRoutes() {
   const location = useLocation();
   const hideNavbarOn = ['/login', '/register'];
 
-  // cek apakah sekarang di LandingPage
   const isLanding = location.pathname === "/";
+
+  // hanya animasi kalau di login/register
+  const isAuthPage = ['/login', '/register'].includes(location.pathname);
 
   return (
     <>
@@ -25,26 +27,39 @@ function AppRoutes() {
         <Navbar transparent={isLanding} />  
       )}
 
-      {/* ini yang di-animate hanya konten route */}
-      <AnimatePresence mode="wait">
-        <motion.div 
-          key={location.pathname}
-          initial={{ opacity: 0, x: 80 }}      // konten route masuk dari kanan
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -80 }}       // keluar ke kiri
-          transition={{ duration: 0.6, ease: 'easeInOut' }}
-        >
-          <Routes location={location} key={location.pathname}>
-            <Route path="/" element={<App />} />
-            <Route path="/news" element={<NewsPage />} />
-            <Route path="/ticket" element={<TicketPage />} />
-            <Route path="/payment" element={<PaymentPage />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-          </Routes>
-        </motion.div>
-      </AnimatePresence>
+      {isAuthPage ? (
+        // kalau login/register → pake animasi
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={location.pathname}
+            initial={{ opacity: 0, x: 80 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -80 }}
+            transition={{ duration: 0.6, ease: 'easeInOut' }}
+          >
+            <Routes location={location} key={location.pathname}>
+              <Route path="/" element={<App />} />
+              <Route path="/news" element={<NewsPage />} />
+              <Route path="/ticket" element={<TicketPage />} />
+              <Route path="/payment" element={<PaymentPage />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+            </Routes>
+          </motion.div>
+        </AnimatePresence>
+      ) : (
+        // halaman biasa → tanpa animasi
+        <Routes location={location}>
+          <Route path="/" element={<App />} />
+          <Route path="/news" element={<NewsPage />} />
+          <Route path="/ticket" element={<TicketPage />} />
+          <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      )}
     </>
   );
 }
