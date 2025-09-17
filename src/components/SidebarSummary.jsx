@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Menu } from "lucide-react";
 
 export default function OrderSummary() {
-  const [step, setStep] = useState(1); // 1=checkout, 2=pilih pembayaran, 3=pembayaran
+  const [step, setStep] = useState(1);
 
   return (
     <div className="bg-gray-50 p-4 rounded-xl border w-full max-w-sm">
@@ -20,33 +20,38 @@ export default function OrderSummary() {
       </div>
       <div className="h-1 bg-gray-300 rounded-full my-2">
         <div
-          className="h-1 bg-black rounded-full transition-all"
+          className="h-1 bg-black rounded-full transition-[width] duration-500 ease-in-out"
           style={{ width: `${(step / 3) * 100}%` }}
         ></div>
       </div>
 
-      {/* Konten dinamis sesuai step */}
-      <div className="text-sm space-y-2 mb-4">
+      {/* Konten */}
+      <div className="text-sm mb-4">
         {step === 1 && (
-          <>
-            <p className="text-gray-500">Weekend Ticket</p>
-            <p className="font-medium">Teater Sukabumi Gokil</p>
-            <div className="flex justify-between border-t border-b py-2">
-              <span className="font-semibold">Total Pembayaran</span>
-           <span className="text-black font-bold">Rp.40.000</span>
-           
+          <div className="space-y-3 max-w-[300px] mx-auto">
+            <div>
+              <p className="text-gray-500">Weekend Ticket</p>
+              <p className="font-medium">Teater Sukabumi Gokil</p>
             </div>
-          </>
+            <div className="border-t border-b py-2">
+              <div className="flex justify-between">
+                <span className="font-semibold">Total Pembayaran</span>
+                <span className="text-black font-bold">Rp.40.000</span>
+              </div>
+            </div>
+          </div>
         )}
 
         {step === 2 && (
-          <p className="text-gray-600">Silakan pilih metode pembayaran.</p>
+          <div className="max-w-[300px] mx-auto text-gray-600">
+            Silakan pilih metode pembayaran.
+          </div>
         )}
 
         {step === 3 && (
-          <p className="text-green-600 font-semibold">
+          <div className="max-w-[300px] mx-auto text-green-600 font-semibold">
             ✅ Pembayaran berhasil!
-          </p>
+          </div>
         )}
       </div>
 
@@ -56,9 +61,7 @@ export default function OrderSummary() {
           onClick={() => setStep(step + 1)}
           className="w-full bg-red-600 text-white py-2 rounded-md font-semibold"
         >
-          {step === 1
-            ? "Pilih Metode Pembayaran"
-            : "Bayar Sekarang"}
+          {step === 1 ? "Pilih Metode Pembayaran" : "Bayar Sekarang"}
         </button>
       )}
     </div>

@@ -2,15 +2,45 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Gambar from "../assets/Gambar Website/undraw_people_ka7y.png";
 import { motion } from "framer-motion";
+import AuthController from "../controllers/AuthController";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const API_URL = import.meta.env.VITE_API_URL;
+  const IMAGE_URL = import.meta.env.VITE_API_URL_IMAGE;
+
+  const AuthController = {
+    login: async (email, password) => {
+      const res = await fetch(`${API_URL}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!res.ok) throw new Error("Login gagal");
+      return await res.json();
+    },
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login attempt:", { email, password });
+    try {
+      const data = await AuthController.login(email, password);
+
+      // contoh simpan token
+      localStorage.setItem("token", data.token);
+
+      // pindah halaman setelah login
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+      alert("Login gagal!");
+    }
   };
 
   const handleCancel = () => {
@@ -95,7 +125,11 @@ export default function Login() {
       {/* Panel gambar kanan (tanpa animasi) */}
       <div className="flex items-center justify-center relative">
         <div className="absolute top-0 right-0 w-[150px] h-[150px] bg-[#c53030] rounded-bl-full" />
-        <img src={Gambar} className="w-[300px] h-auto object-contain" alt="Ilustrasi" />
+        <img
+          src={Gambar}
+          className="w-[300px] h-auto object-contain"
+          alt="Ilustrasi"
+        />
       </div>
     </div>
   );
