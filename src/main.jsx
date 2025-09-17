@@ -10,6 +10,7 @@ import PaymentPage from "./pages/PaymentPage";
 import About from './pages/About';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import DetailKomentar from './pages/DetailKomentar'; // ✅ ini yang ditambah
 import { AnimatePresence, motion } from "framer-motion";
 
 function AppRoutes() {
@@ -42,6 +43,7 @@ function AppRoutes() {
             <Route path="/about" element={<About />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/detailkomentar" element={<DetailKomentar />} /> {/* ✅ route ke DetailKomentar */}
           </Routes>
         </motion.div>
       </AnimatePresence>

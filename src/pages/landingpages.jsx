@@ -1,4 +1,5 @@
 // src/pages/LandingPage.jsx
+import { Link } from "react-router-dom";
 import GambarLanding from "../assets/Gambar Website/orang.jpg";
 import Gambar2 from "../assets/Gambar Website/hoki.jpg";
 import BackgroundGabung from "../assets/Gambar Website/bergabung.jpg";
@@ -115,7 +116,9 @@ export default function LandingPage() {
                 <p className="font-bold text-white">Tiket Teater</p>
 
                 {/* Harga di kanan bawah */}
-                <p className="text-right font-semibold text-white">Rp.40.000</p>
+                <p className="text-right font-semibold text-white">
+                  Rp.40.000
+                </p>
               </div>
             </div>
           </div>
@@ -125,9 +128,13 @@ export default function LandingPage() {
         <div className="bg-red-700 -mx-8 md:-mx-16 mt-20 py-12 px-6 md:px-16  py-24 md:py-32">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-white text-2xl font-bold">Komentar User</h2>
-            <button className="bg-red-800 hover:bg-red-900 text-white px-4 py-2 rounded-md text-sm transition">
+            {/* pake Link ke halaman detail */}
+            <Link
+              to="/detailkomentar"
+              className="bg-red-800 hover:bg-red-900 text-white px-4 py-2 rounded-md text-sm transition"
+            >
               Lihat Lainnya →
-            </button>
+            </Link>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
@@ -158,6 +165,7 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
       {/* Section ajakan bergabung */}
       <section
         className="relative bg-cover bg-center py-24 md:py-32"
@@ -193,7 +201,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Footer */}
+      {/* Footer (sama persis) */}
       <footer className="bg-[#2E3A44] text-white py-12">
         <div className="max-w-7xl mx-auto px-8 grid md:grid-cols-5 gap-8">
           {/* Logo */}
