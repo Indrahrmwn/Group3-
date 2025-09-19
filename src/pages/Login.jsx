@@ -12,6 +12,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const WEB_URL = import.meta.env.VITE_WEB_URL;
 
   const API_URL = import.meta.env.VITE_API_URL;
 
@@ -75,7 +76,7 @@ export default function Login() {
   // tombol login Google
   const handleGoogleLogin = () => {
     // arahkan ke endpoint Google login di Laravel
-    window.location.href = `${API_URL}/auth/google`;
+    window.location.href = `${WEB_URL}/auth/google`;
   };
 
   return (
