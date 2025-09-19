@@ -1,8 +1,12 @@
+// Login.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Gambar from "../assets/Gambar Website/undraw_people_ka7y.png";
 import { motion } from "framer-motion";
-import AuthController from "../controllers/AuthController";
+import Swal from "sweetalert2";
+
+// (opsional) icon Google
+import { FcGoogle } from "react-icons/fc";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -10,36 +14,52 @@ export default function Login() {
   const navigate = useNavigate();
 
   const API_URL = import.meta.env.VITE_API_URL;
-  const IMAGE_URL = import.meta.env.VITE_API_URL_IMAGE;
 
-  const AuthController = {
-    login: async (email, password) => {
-      const res = await fetch(`${API_URL}/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+  const loginRequest = async (email, password) => {
+    const res = await fetch(`${API_URL}/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
-      if (!res.ok) throw new Error("Login gagal");
-      return await res.json();
-    },
+    if (!res.ok) throw new Error("Login gagal");
+    return await res.json();
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const data = await AuthController.login(email, password);
+    Swal.fire({
+      title: "Sedang login...",
+      text: "Mohon tunggu sebentar",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
 
-      // contoh simpan token
+    try {
+      const data = await loginRequest(email, password);
       localStorage.setItem("token", data.token);
 
-      // pindah halaman setelah login
-      navigate("/");
+      Swal.fire({
+        icon: "success",
+        title: "Berhasil login",
+        text: `Selamat datang ${data.user?.name || ""}`,
+        timer: 1500,
+        showConfirmButton: false,
+      });
+
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
     } catch (err) {
-      console.error(err);
-      alert("Login gagal!");
+      Swal.fire({
+        icon: "error",
+        title: "Login gagal",
+        text: "Periksa kembali email dan password kamu",
+      });
     }
   };
 
@@ -50,6 +70,12 @@ export default function Login() {
 
   const handleRegister = () => {
     navigate("/register");
+  };
+
+  // tombol login Google
+  const handleGoogleLogin = () => {
+    // arahkan ke endpoint Google login di Laravel
+    window.location.href = `${API_URL}/auth/google`;
   };
 
   return (
@@ -68,7 +94,7 @@ export default function Login() {
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label className="block font-semibold text-white text-base mb-1">
-              Masukan Email atau Username
+              Masukan Email
             </label>
             <input
               type="email"
@@ -90,6 +116,18 @@ export default function Login() {
               className="w-full h-[47px] bg-white rounded-xl px-3 text-black focus:outline-none focus:ring-4 focus:ring-[#f87171] shadow-md transition-all"
               required
             />
+          </div>
+
+          {/* tombol login Google */}
+          <div className="pt-4">
+            <button
+              type="button"
+              onClick={handleGoogleLogin}
+              className="flex items-center justify-center w-full gap-2 px-4 py-2 bg-white text-[#c53030] font-semibold rounded-[30px] hover:bg-gray-100 hover:scale-105 transition-transform shadow"
+            >
+              <FcGoogle className="text-xl" />
+              <span>Masuk dengan Google</span>
+            </button>
           </div>
 
           <div className="flex items-center text-white font-semibold space-x-2 text-base">
@@ -122,7 +160,7 @@ export default function Login() {
         </form>
       </motion.div>
 
-      {/* Panel gambar kanan (tanpa animasi) */}
+      {/* Panel gambar kanan */}
       <div className="flex items-center justify-center relative">
         <div className="absolute top-0 right-0 w-[150px] h-[150px] bg-[#c53030] rounded-bl-full" />
         <img
