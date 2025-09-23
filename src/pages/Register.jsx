@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 
 export default function Register() {
-  const [name, setUsername] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -36,7 +36,7 @@ export default function Register() {
         },
       });
 
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/register`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -49,12 +49,12 @@ export default function Register() {
         }),
       });
 
-      if (!res.ok) {
-        const errMsg = await res.text();
-        throw new Error(errMsg || "Gagal mendaftar");
-      }
+      const data = await res.json();
 
-      await res.json();
+      if (!res.ok) {
+        const errorMessage = data.message || "Gagal mendaftar";
+        throw new Error(errorMessage);
+      }
 
       // tutup loading dan munculkan sukses
       Swal.fire({
@@ -66,18 +66,19 @@ export default function Register() {
       });
 
       setTimeout(() => navigate("/login"), 1500);
+      
     } catch (err) {
-      console.error(err);
+      console.error("Error:", err);
       Swal.fire({
         icon: "error",
         title: "Gagal",
-        text: "Gagal mendaftar, periksa kembali data Anda",
+        text: err.message || "Gagal mendaftar, periksa kembali data Anda",
       });
     }
   };
 
   const handleCancel = () => {
-    setUsername("");
+    setName("");
     setEmail("");
     setPassword("");
     setConfirmPassword("");
@@ -114,7 +115,7 @@ export default function Register() {
             <input
               type="text"
               value={name}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => setName(e.target.value)}
               className="w-full h-[47px] bg-white rounded-xl px-3 text-black focus:outline-none focus:ring-4 focus:ring-[#f87171] shadow-md transition-all"
               required
             />
