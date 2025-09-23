@@ -11,6 +11,7 @@ import About from './pages/About';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import DetailKomentar from './pages/DetailKomentar';
+import Profile from './pages/profile.jsx';
 import { AnimatePresence, motion } from "framer-motion";
 
 function AppRoutes() {
@@ -45,6 +46,7 @@ function AppRoutes() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/detailkomentar" element={<DetailKomentar />} />
+              <Route path="/profile" element={<Profile />} />
             </Routes>
           </motion.div>
         </AnimatePresence>
@@ -59,6 +61,7 @@ function AppRoutes() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/detailkomentar" element={<DetailKomentar />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       )}
     </>

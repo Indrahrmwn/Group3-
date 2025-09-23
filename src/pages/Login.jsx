@@ -4,29 +4,32 @@ import { useNavigate } from "react-router-dom";
 import Gambar from "../assets/Gambar Website/undraw_people_ka7y.png";
 import { motion } from "framer-motion";
 import Swal from "sweetalert2";
-
-// (opsional) icon Google
 import { FcGoogle } from "react-icons/fc";
+import axios from "axios";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const WEB_URL = import.meta.env.VITE_WEB_URL;
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
-  const API_URL = import.meta.env.VITE_API_URL;
-
+  // fungsi login request
   const loginRequest = async (email, password) => {
-    const res = await fetch(`${API_URL}/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
+    console.log("Requesting to:", `${API_URL}/api/login`); // Debug
+    console.log("API_URL value:", API_URL); // Debug tambahan
 
-    if (!res.ok) throw new Error("Login gagal");
-    return await res.json();
+    const res = await axios.post(
+      `${API_URL}/api/login`, // Akan jadi http://localhost:8000/api/login
+      { email, password },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      }
+    );
+    return res.data;
   };
 
   const handleSubmit = async (e) => {
@@ -35,14 +38,16 @@ export default function Login() {
       title: "Sedang login...",
       text: "Mohon tunggu sebentar",
       allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
-      },
+      didOpen: () => Swal.showLoading(),
     });
 
     try {
       const data = await loginRequest(email, password);
-      localStorage.setItem("token", data.token);
+
+      // Simpan token ke localStorage jika ada
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+      }
 
       Swal.fire({
         icon: "success",
@@ -52,9 +57,7 @@ export default function Login() {
         showConfirmButton: false,
       });
 
-      setTimeout(() => {
-        navigate("/");
-      }, 1500);
+      setTimeout(() => navigate("/"), 1500);
     } catch (err) {
       Swal.fire({
         icon: "error",
@@ -69,13 +72,9 @@ export default function Login() {
     setPassword("");
   };
 
-  const handleRegister = () => {
-    navigate("/register");
-  };
+  const handleRegister = () => navigate("/register");
 
-  // tombol login Google
   const handleGoogleLogin = () => {
-    // arahkan ke endpoint Google login di Laravel
     window.location.href = `${WEB_URL}/auth/google`;
   };
 
