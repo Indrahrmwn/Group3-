@@ -1,11 +1,15 @@
-// src/pages/LandingPage.jsx
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import GambarLanding from "../assets/Gambar Website/orang.jpg";
-import Gambar2 from "../assets/Gambar Website/hoki.jpg";
 import BackgroundGabung from "../assets/Gambar Website/bergabung.jpg";
 
 export default function LandingPage() {
-  // data komentar dummy
+  // State untuk menyimpan data tiket
+  const [tickets, setTickets] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Data komentar dummy (tetap sama)
   const comments = [
     {
       name: "jamaludin",
@@ -29,6 +33,94 @@ export default function LandingPage() {
       stars: 5,
     },
   ];
+
+  // Fungsi untuk fetch data tiket dari API
+  const fetchTickets = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // URL API - ganti sesuai dengan port Laravel Anda
+      const apiUrl = 'http://localhost:8000/api/tickets';
+      console.log('Fetching from:', apiUrl);
+      
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest', // Penting untuk Laravel
+        }
+      });
+      
+      console.log('Response status:', response.status);
+      console.log('Response URL:', response.url);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+      
+      // Debug: lihat response text sebelum parsing JSON
+      const responseText = await response.text();
+      console.log('Response text (first 200 chars):', responseText.substring(0, 200));
+      
+      // Cek apakah response adalah HTML (error page)
+      if (responseText.trim().startsWith('<!DOCTYPE') || 
+          responseText.trim().startsWith('<!doctype') || 
+          responseText.trim().startsWith('<html')) {
+        throw new Error(`Server mengembalikan HTML bukan JSON. Status: ${response.status}. Kemungkinan:
+          1. Laravel server tidak berjalan (jalankan: php artisan serve)
+          2. Route tidak ditemukan
+          3. CORS issue
+          4. URL salah (cek apakah http://localhost:8000 benar)`);
+      }
+      
+      // Cek apakah response kosong
+      if (!responseText.trim()) {
+        throw new Error('Server mengembalikan response kosong');
+      }
+      
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch (parseError) {
+        console.error('JSON Parse Error:', parseError);
+        throw new Error(`Invalid JSON response: ${parseError.message}`);
+      }
+      
+      console.log('Parsed data:', data);
+      
+      // Cek struktur response Laravel
+      if (data.status === 'success') {
+        setTickets(data.data || []);
+        console.log('Tickets loaded:', data.data?.length || 0);
+      } else {
+        throw new Error(data.message || 'API returned error status');
+      }
+      
+    } catch (err) {
+      const errorMsg = err.message || 'Unknown error occurred';
+      setError(errorMsg);
+      console.error('Complete error details:', {
+        error: err,
+        message: errorMsg,
+        stack: err.stack
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // useEffect untuk memanggil API saat komponen dimount
+  useEffect(() => {
+    fetchTickets();
+  }, []);
+
+  // Fungsi untuk format harga
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0
+    }).format(price);
+  };
 
   return (
     <>
@@ -65,7 +157,7 @@ export default function LandingPage() {
 
       {/* Bagian bawah */}
       <section className="bg-white px-20 md:px-16">
-        <div className="bg-red-700 -mx-8 md:-mx-16 py-20  py-24 md:py-32">
+        <div className="bg-red-700 -mx-8 md:-mx-16 py-20 py-24 md:py-32">
           <div className="max-w-7xl mx-auto px-6">
             <h2 className="text-2xl font-bold mb-8 text-white">
               Apa yang Kamu Dapat?
@@ -98,37 +190,133 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Beli tiket */}
+        {/* Beli tiket - Dengan data dari database */}
         <div className="mt-16">
           <h2 className="text-2xl font-bold mb-4">Beli Tiket</h2>
 
-          <div className="flex justify-start mt-10">
-            <div className="min-w-60 rounded-xl overflow-hidden shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
-              {/* gambar */}
-              <img
-                src={Gambar2}
-                alt="Tiket Teater"
-                className="w-full h-48 object-cover"
-              />
+          {/* Loading state */}
+          {loading && (
+            <div className="flex justify-center items-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-700"></div>
+              <span className="ml-3 text-gray-600">Memuat tiket...</span>
+            </div>
+          )}
 
-              <div className="bg-red-600 p-4 h-32 flex flex-col justify-between">
-                {/* Judul di kiri atas */}
-                <p className="font-bold text-white">Tiket Teater</p>
-
-                {/* Harga di kanan bawah */}
-                <p className="text-right font-semibold text-white">
-                  Rp.40.000
-                </p>
+          {/* Error state */}
+          {error && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+              <div className="font-bold mb-2">Error Details:</div>
+              <div className="text-sm whitespace-pre-line">{error}</div>
+              <div className="mt-4 flex gap-2">
+                <button 
+                  onClick={fetchTickets}
+                  className="bg-red-700 text-white px-4 py-2 rounded text-sm hover:bg-red-800"
+                >
+                  Coba Lagi
+                </button>
+                <button 
+                  onClick={() => {
+                    // Test direct API call
+                    window.open('http://localhost:8000/api/tickets', '_blank');
+                  }}
+                  className="bg-blue-700 text-white px-4 py-2 rounded text-sm hover:bg-blue-800"
+                >
+                  Test API di Browser
+                </button>
               </div>
             </div>
-          </div>
+          )}
+
+          {/* Tampilan tiket dari database */}
+          {!loading && !error && tickets.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+              {tickets.map((ticket) => (
+                <div
+                  key={ticket.id}
+                  className="min-w-60 rounded-xl overflow-hidden shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                >
+                  {/* Gambar */}
+                  <img
+                    src={ticket.image_url || '/default-ticket-image.jpg'}
+                    alt={ticket.ticket_name || ticket.title}
+                    className="w-full h-48 object-cover"
+                  />
+
+                  <div className="bg-red-600 p-4 h-auto flex flex-col justify-between">
+                    {/* Judul dan deskripsi */}
+                    <div className="mb-3">
+                      <p className="font-bold text-white text-lg mb-1">
+                        {ticket.ticket_name || ticket.title}
+                      </p>
+                      {ticket.description && (
+                        <p className="text-white text-sm opacity-90">
+                          {ticket.description}
+                        </p>
+                      )}
+                      {ticket.event_date && (
+                        <p className="text-white text-xs mt-2">
+                          📅 {new Date(ticket.event_date).toLocaleDateString('id-ID')}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Harga dan status */}
+                    <div className="flex justify-between items-end">
+                      <div>
+                        {(ticket.quantity_available || ticket.stock) > 0 ? (
+                          <p className="text-white text-xs">
+                            Sisa: {ticket.quantity_available || ticket.stock} tiket
+                          </p>
+                        ) : (
+                          <p className="text-red-200 text-xs font-semibold">
+                            Sold Out
+                          </p>
+                        )}
+                      </div>
+                      <p className="text-right font-semibold text-white text-lg">
+                        {formatPrice(ticket.price)}
+                      </p>
+                    </div>
+
+                    {/* Tombol beli */}
+                    <button
+                      className={`mt-3 w-full py-2 rounded text-sm font-semibold transition ${
+                        (ticket.quantity_available || ticket.stock) > 0
+                          ? 'bg-white text-red-600 hover:bg-gray-100'
+                          : 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                      }`}
+                      disabled={(ticket.quantity_available || ticket.stock) === 0}
+                      onClick={() => {
+                        // Handle pembelian tiket
+                        if ((ticket.quantity_available || ticket.stock) > 0) {
+                          console.log('Beli tiket:', ticket.id);
+                          // Redirect ke halaman checkout atau buka modal
+                        }
+                      }}
+                    >
+                      {(ticket.quantity_available || ticket.stock) > 0 ? 'Beli Sekarang' : 'Habis'}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Jika tidak ada tiket */}
+          {!loading && !error && tickets.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-gray-500 text-lg">Belum ada tiket tersedia</p>
+              <p className="text-gray-400 text-sm mt-2">
+                Pantau terus untuk update tiket terbaru!
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Komentar User */}
-        <div className="bg-red-700 -mx-8 md:-mx-16 mt-20 py-12 px-6 md:px-16  py-24 md:py-32">
+        <div className="bg-red-700 -mx-8 md:-mx-16 mt-20 py-12 px-6 md:px-16 py-24 md:py-32">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-white text-2xl font-bold">Komentar User</h2>
-            {/* pake Link ke halaman detail */}
             <Link
               to="/detailkomentar"
               className="bg-red-800 hover:bg-red-900 text-white px-4 py-2 rounded-md text-sm transition"
@@ -153,7 +341,7 @@ export default function LandingPage() {
                   </div>
                 </div>
 
-                <p className="text-sm text-gray-700 mb-4">“{item.comment}”</p>
+                <p className="text-sm text-gray-700 mb-4">"{item.comment}"</p>
 
                 <div className="flex text-yellow-400 text-lg">
                   {Array.from({ length: item.stars }).map((_, i) => (
@@ -176,7 +364,6 @@ export default function LandingPage() {
         }}
       >
         <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 items-center">
-          {/* Kiri: teks */}
           <div className="space-y-4">
             <h2 className="text-2xl md:text-3xl font-bold text-black">
               Bergabunglah dengan Komunitas Remaja Tengah!
@@ -196,15 +383,13 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Kanan: bisa kosong atau gambar */}
           <div className="hidden md:block" />
         </div>
       </section>
 
-      {/* Footer (sama persis) */}
+      {/* Footer */}
       <footer className="bg-[#2E3A44] text-white py-12">
         <div className="max-w-7xl mx-auto px-8 grid md:grid-cols-5 gap-8">
-          {/* Logo */}
           <div className="md:col-span-1">
             <img
               src="/src/assets/Gambar Website/tes.png"
@@ -213,7 +398,6 @@ export default function LandingPage() {
             />
           </div>
 
-          {/* Quick Links */}
           <div>
             <h3 className="font-bold mb-3">Quick Links</h3>
             <ul className="space-y-2 text-sm">
@@ -225,7 +409,6 @@ export default function LandingPage() {
             </ul>
           </div>
 
-          {/* Connect With Us */}
           <div>
             <h3 className="font-bold mb-3">Connect With Us</h3>
             <ul className="space-y-2 text-sm">
@@ -237,7 +420,6 @@ export default function LandingPage() {
             </ul>
           </div>
 
-          {/* Stay Update */}
           <div>
             <h3 className="font-bold mb-3">Stay Update</h3>
             <ul className="space-y-2 text-sm">
@@ -249,7 +431,6 @@ export default function LandingPage() {
             </ul>
           </div>
 
-          {/* Subscribe */}
           <div>
             <h3 className="font-bold mb-3">Subscribe</h3>
             <p className="text-sm mb-3">
