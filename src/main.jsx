@@ -11,23 +11,25 @@ import About from './pages/About';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import DetailKomentar from './pages/DetailKomentar';
+import Profile from './pages/profile.jsx';
+import AuthCallback from './pages/AuthCallback';
 import { AnimatePresence, motion } from "framer-motion";
 
 function AppRoutes() {
   const location = useLocation();
   const hideNavbarOn = ['/login', '/register'];
-
   const isLanding = location.pathname === "/";
   const isAuthPage = ['/login', '/register'].includes(location.pathname);
 
   return (
     <>
+      {/* tampilkan Navbar kecuali login/register */}
       {!hideNavbarOn.includes(location.pathname) && (
         <Navbar transparent={isLanding} />
       )}
 
       {isAuthPage ? (
-        // animasi cuma di login/register
+        // kalau login / register → pakai animasi
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
@@ -45,6 +47,8 @@ function AppRoutes() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/detailkomentar" element={<DetailKomentar />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/auth/callback" element={<AuthCallback />} />
             </Routes>
           </motion.div>
         </AnimatePresence>
@@ -59,6 +63,8 @@ function AppRoutes() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/detailkomentar" element={<DetailKomentar />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
         </Routes>
       )}
     </>

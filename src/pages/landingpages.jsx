@@ -13,7 +13,7 @@ export default function LandingPage() {
       comment:
         "Lokakarya ini telah membantu saya mengembangkan kreativitas. Saya merasa lebih percaya diri di atas panggung daripada sebelumnya!",
       stars: 5,
-    },
+    }, 
     {
       name: "jamaludin",
       date: "29-maret-2024",

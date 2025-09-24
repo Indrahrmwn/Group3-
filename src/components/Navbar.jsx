@@ -92,7 +92,7 @@ export default function Navbar({ transparent = false }) {
           Buy Ticket
         </Link>
 
-        <div
+        <Link to="/profile"
           className={`w-8 h-8 rounded-full border flex items-center justify-center cursor-pointer transition duration-300 ${
             showTransparent
               ? "bg-white/20 text-white border-white hover:bg-red-500"
@@ -100,7 +100,7 @@ export default function Navbar({ transparent = false }) {
           }`}
         >
           👤
-        </div>
+        </Link>
       </div>
     </header>
   );
