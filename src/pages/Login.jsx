@@ -75,6 +75,14 @@ export default function Login() {
   const handleRegister = () => navigate("/register");
 
   const handleGoogleLogin = () => {
+    console.log("WEB_URL:", WEB_URL); // Debug
+    console.log("Redirecting to:", `${WEB_URL}/auth/google`); // Debug
+
+    if (!WEB_URL) {
+      alert("WEB_URL tidak terdefinisi di .env");
+      return;
+    }
+
     window.location.href = `${WEB_URL}/auth/google`;
   };
 

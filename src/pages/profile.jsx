@@ -205,14 +205,35 @@ export default function Profile() {
     }
   };
 
-  const handleImageError = () => {
+  const handleImageError = (e) => {
     console.error("Image failed to load, showing default avatar");
+    console.error("Failed URL:", e.target.src);
+    console.error("User profile_photo:", user?.profile_photo);
     setImageError(true);
   };
 
   const handleImageLoad = () => {
     console.log("Image loaded successfully");
     setImageError(false);
+  };
+
+  // Helper function to get image URL
+  const getImageUrl = () => {
+    if (!user?.profile_photo) return null;
+    
+    const baseUrl = user.profile_photo.startsWith('http') 
+      ? user.profile_photo 
+      : `${import.meta.env.VITE_API_URL}/${user.profile_photo}`;
+    
+    const finalUrl = `${baseUrl}?t=${photoTimestamp}`;
+    
+    console.log("=== IMAGE URL DEBUG ===");
+    console.log("user.profile_photo:", user.profile_photo);
+    console.log("VITE_API_URL:", import.meta.env.VITE_API_URL);
+    console.log("baseUrl:", baseUrl);
+    console.log("finalUrl:", finalUrl);
+    
+    return finalUrl;
   };
 
   if (!isLoggedIn) {
@@ -278,6 +299,8 @@ export default function Profile() {
     );
   }
 
+  const imageUrl = getImageUrl();
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4 mt-25 relative">
       {/* Toast Notification */}
@@ -330,12 +353,9 @@ export default function Profile() {
                   alt="Profile Preview"
                   className="w-full h-full object-cover"
                 />
-              ) : (user.profile_photo && !imageError) ? (
+              ) : (imageUrl && !imageError) ? (
                 <img
-                  src={user.profile_photo.startsWith('http') 
-                    ? `${user.profile_photo}?t=${photoTimestamp}` 
-                    : `${import.meta.env.VITE_API_URL}/${user.profile_photo}?t=${photoTimestamp}`
-                  }
+                  src={imageUrl}
                   alt="Profile"
                   className="w-full h-full object-cover"
                   onError={handleImageError}
@@ -456,7 +476,7 @@ export default function Profile() {
 
           <button
             onClick={() => {
-              localStorage.removeItem("token");
+              localStorage.removeToken("token");
               navigate("/login");
             }}
             className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-3 px-4 rounded-lg transition duration-200 ease-in-out"
