@@ -10,7 +10,7 @@ import PaymentPage from "./pages/PaymentPage";
 import About from './pages/About';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import DetailKomentar from './pages/DetailKomentar'; // ✅ ini yang ditambah
+import DetailKomentar from './pages/DetailKomentar';
 import { AnimatePresence, motion } from "framer-motion";
 
 function AppRoutes() {
@@ -18,41 +18,16 @@ function AppRoutes() {
   const hideNavbarOn = ['/login', '/register'];
 
   const isLanding = location.pathname === "/";
-
-  // hanya animasi kalau di login/register
   const isAuthPage = ['/login', '/register'].includes(location.pathname);
 
   return (
     <>
       {!hideNavbarOn.includes(location.pathname) && (
-        <Navbar transparent={isLanding} />  
+        <Navbar transparent={isLanding} />
       )}
 
-<<<<<<< HEAD
-      {/* ini yang di-animate hanya konten route */}
-      <AnimatePresence mode="wait">
-        <motion.div 
-          key={location.pathname}
-          initial={{ opacity: 0, x: 80 }}      // konten route masuk dari kanan
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -80 }}       // keluar ke kiri
-          transition={{ duration: 0.6, ease: 'easeInOut' }}
-        >
-          <Routes location={location} key={location.pathname}>
-            <Route path="/" element={<App />} />
-            <Route path="/news" element={<NewsPage />} />
-            <Route path="/ticket" element={<TicketPage />} />
-            <Route path="/payment" element={<PaymentPage />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/detailkomentar" element={<DetailKomentar />} /> {/* ✅ route ke DetailKomentar */}
-          </Routes>
-        </motion.div>
-      </AnimatePresence>
-=======
       {isAuthPage ? (
-        // kalau login/register → pake animasi
+        // animasi cuma di login/register
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
@@ -69,6 +44,7 @@ function AppRoutes() {
               <Route path="/about" element={<About />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/detailkomentar" element={<DetailKomentar />} />
             </Routes>
           </motion.div>
         </AnimatePresence>
@@ -82,9 +58,9 @@ function AppRoutes() {
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/detailkomentar" element={<DetailKomentar />} />
         </Routes>
       )}
->>>>>>> 9379cae246eff0121fcae50177667ed5b102dd33
     </>
   );
 }
