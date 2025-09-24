@@ -39,11 +39,13 @@ export default function Profile() {
       })
       .then((res) => {
         console.log("Profile response:", res.data);
-        if (res.data.user) {
-          setUser(res.data.user);
-        } else {
-          setUser(res.data);
-        }
+        const userData = res.data.user || res.data;
+        setUser(userData);
+        
+        // TAMBAHAN: Simpan user data ke localStorage untuk navbar
+        localStorage.setItem("user", JSON.stringify(userData));
+        window.dispatchEvent(new Event("userUpdated"));
+        
         setLoading(false);
       })
       .catch((err) => {
@@ -52,6 +54,7 @@ export default function Profile() {
         setLoading(false);
         if (err.response?.status === 401) {
           localStorage.removeItem("token");
+          localStorage.removeItem("user");
           setIsLoggedIn(false);
           setTimeout(() => {
             navigate("/login");
@@ -93,13 +96,15 @@ export default function Profile() {
         },
       });
 
-      if (response.data.user) {
-        setUser(response.data.user);
-      } else {
-        setUser(response.data);
-      }
+      const userData = response.data.user || response.data;
+      setUser(userData);
       setPhotoTimestamp(Date.now());
       setImageError(false);
+      
+      // TAMBAHAN: Update localStorage agar navbar ikut berubah
+      localStorage.setItem("user", JSON.stringify(userData));
+      window.dispatchEvent(new Event("userUpdated"));
+      
     } catch (error) {
       console.error("Error refreshing profile:", error);
     }
@@ -130,6 +135,9 @@ export default function Profile() {
 
   const uploadProfilePhoto = async (file) => {
     setUploading(true);
+    
+    // TAMBAHAN: Notify navbar bahwa upload dimulai
+    window.dispatchEvent(new Event("profileUploadStart"));
     
     try {
       const token = localStorage.getItem("token");
@@ -173,6 +181,10 @@ export default function Profile() {
         setPhotoTimestamp(Date.now());
         setImageError(false);
         
+        // TAMBAHAN: Update localStorage agar navbar ikut berubah
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        window.dispatchEvent(new Event("userUpdated"));
+        
         console.log("=== FINAL IMAGE URL ===");
         const imageUrl = response.data.user.profile_photo?.startsWith('http') 
           ? response.data.user.profile_photo 
@@ -202,6 +214,9 @@ export default function Profile() {
       showToast("Gagal mengupload foto profil. Silakan coba lagi.", 'error');
     } finally {
       setUploading(false);
+      
+      // TAMBAHAN: Notify navbar bahwa upload selesai
+      window.dispatchEvent(new Event("profileUploadEnd"));
     }
   };
 
@@ -235,6 +250,9 @@ export default function Profile() {
     
     return finalUrl;
   };
+
+  // Default profile image menggunakan gambar dari assets
+  const defaultProfileImage = "/src/assets/Gambar Website/default-avatar.jpg";
 
   if (!isLoggedIn) {
     return (
@@ -362,6 +380,19 @@ export default function Profile() {
                   onLoad={handleImageLoad}
                 />
               ) : (
+                <img
+                  src={defaultProfileImage}
+                  alt="Default Profile"
+                  className="w-full h-full object-cover"
+                  onError={() => {
+                    // Jika default avatar juga gagal, tampilkan icon SVG
+                    setImageError(true);
+                  }}
+                />
+              )}
+              
+              {/* Fallback SVG jika semua gambar gagal */}
+              {imageError && (
                 <svg
                   className="w-10 h-10 text-white"
                   fill="none"
@@ -476,7 +507,9 @@ export default function Profile() {
 
           <button
             onClick={() => {
-              localStorage.removeToken("token");
+              localStorage.removeItem("token");
+              localStorage.removeItem("user");
+              window.dispatchEvent(new Event("userUpdated"));
               navigate("/login");
             }}
             className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-3 px-4 rounded-lg transition duration-200 ease-in-out"
