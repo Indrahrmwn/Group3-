@@ -13,6 +13,7 @@ import Register from './pages/Register';
 import DetailKomentar from './pages/DetailKomentar';
 import Profile from './pages/profile.jsx';
 import AuthCallback from './pages/AuthCallback';
+import { AuthProvider } from './context/AuthContext';
 import { AnimatePresence, motion } from "framer-motion";
 
 function AppRoutes() {
@@ -73,6 +74,8 @@ function AppRoutes() {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>
-    <AppRoutes />
+    <AuthProvider>
+      <AppRoutes />
+    </AuthProvider>
   </BrowserRouter>
 );

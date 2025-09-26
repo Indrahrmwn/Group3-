@@ -1,4 +1,4 @@
-// Login.jsx
+// src/pages/Login.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Gambar from "../assets/Gambar Website/undraw_people_ka7y.png";
@@ -6,21 +6,21 @@ import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth(); // ambil login function dari context
+
   const WEB_URL = import.meta.env.VITE_WEB_URL;
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
   // fungsi login request
   const loginRequest = async (email, password) => {
-    console.log("Requesting to:", `${API_URL}/api/login`); // Debug
-    console.log("API_URL value:", API_URL); // Debug tambahan
-
     const res = await axios.post(
-      `${API_URL}/api/login`, // Akan jadi http://localhost:8000/api/login
+      `${API_URL}/api/login`,
       { email, password },
       {
         headers: {
@@ -44,9 +44,9 @@ export default function Login() {
     try {
       const data = await loginRequest(email, password);
 
-      // Simpan token ke localStorage jika ada
-      if (data.token) {
-        localStorage.setItem("token", data.token);
+      if (data.token && data.user) {
+        // simpan user & token via AuthContext
+        login(data.user, data.token);
       }
 
       Swal.fire({
@@ -59,6 +59,7 @@ export default function Login() {
 
       setTimeout(() => navigate("/"), 1500);
     } catch (err) {
+      console.error("Login error:", err.response?.data || err);
       Swal.fire({
         icon: "error",
         title: "Login gagal",
@@ -68,27 +69,22 @@ export default function Login() {
   };
 
   const handleCancel = () => {
-    setEmail("");
-    setPassword("");
+    navigate("/");
   };
 
   const handleRegister = () => navigate("/register");
 
   const handleGoogleLogin = () => {
-    console.log("WEB_URL:", WEB_URL); // Debug
-    console.log("Redirecting to:", `${WEB_URL}/auth/google`); // Debug
-
     if (!WEB_URL) {
       alert("WEB_URL tidak terdefinisi di .env");
       return;
     }
-
     window.location.href = `${WEB_URL}/auth/google`;
   };
 
   return (
     <div className="bg-white grid grid-cols-2 w-screen h-screen">
-      {/* Panel merah kiri (form) */}
+      {/* Panel kiri */}
       <motion.div
         key="loginForm"
         initial={{ x: "-100%", opacity: 0 }}
@@ -168,7 +164,7 @@ export default function Login() {
         </form>
       </motion.div>
 
-      {/* Panel gambar kanan */}
+      {/* Panel kanan */}
       <div className="flex items-center justify-center relative">
         <div className="absolute top-0 right-0 w-[150px] h-[150px] bg-[#c53030] rounded-bl-full" />
         <img
