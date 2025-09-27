@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import GambarLanding from "../assets/Gambar Website/orang.jpg";
 import BackgroundGabung from "../assets/Gambar Website/bergabung.jpg";
 
 export default function LandingPage() {
+  const navigate = useNavigate();
   // State untuk menyimpan data tiket
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
 
   // Data komentar dummy (tetap sama)
   const comments = [
@@ -17,7 +19,7 @@ export default function LandingPage() {
       comment:
         "Lokakarya ini telah membantu saya mengembangkan kreativitas. Saya merasa lebih percaya diri di atas panggung daripada sebelumnya!",
       stars: 5,
-    }, 
+    },
     {
       name: "jamaludin",
       date: "29-maret-2024",
@@ -39,69 +41,76 @@ export default function LandingPage() {
     try {
       setLoading(true);
       setError(null);
-      
+
       // URL API - ganti sesuai dengan port Laravel Anda
-      const apiUrl = 'http://localhost:8000/api/tickets';
-      console.log('Fetching from:', apiUrl);
-      
+      const apiUrl = "http://localhost:8000/api/tickets";
+      console.log("Fetching from:", apiUrl);
+
       const response = await fetch(apiUrl, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest', // Penting untuk Laravel
-        }
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "X-Requested-With": "XMLHttpRequest", // Penting untuk Laravel
+        },
       });
-      
-      console.log('Response status:', response.status);
-      console.log('Response URL:', response.url);
-      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
-      
+
+      console.log("Response status:", response.status);
+      console.log("Response URL:", response.url);
+      console.log(
+        "Response headers:",
+        Object.fromEntries(response.headers.entries())
+      );
+
       // Debug: lihat response text sebelum parsing JSON
       const responseText = await response.text();
-      console.log('Response text (first 200 chars):', responseText.substring(0, 200));
-      
+      console.log(
+        "Response text (first 200 chars):",
+        responseText.substring(0, 200)
+      );
+
       // Cek apakah response adalah HTML (error page)
-      if (responseText.trim().startsWith('<!DOCTYPE') || 
-          responseText.trim().startsWith('<!doctype') || 
-          responseText.trim().startsWith('<html')) {
+      if (
+        responseText.trim().startsWith("<!DOCTYPE") ||
+        responseText.trim().startsWith("<!doctype") ||
+        responseText.trim().startsWith("<html")
+      ) {
         throw new Error(`Server mengembalikan HTML bukan JSON. Status: ${response.status}. Kemungkinan:
           1. Laravel server tidak berjalan (jalankan: php artisan serve)
           2. Route tidak ditemukan
           3. CORS issue
           4. URL salah (cek apakah http://localhost:8000 benar)`);
       }
-      
+
       // Cek apakah response kosong
       if (!responseText.trim()) {
-        throw new Error('Server mengembalikan response kosong');
+        throw new Error("Server mengembalikan response kosong");
       }
-      
+
       let data;
       try {
         data = JSON.parse(responseText);
       } catch (parseError) {
-        console.error('JSON Parse Error:', parseError);
+        console.error("JSON Parse Error:", parseError);
         throw new Error(`Invalid JSON response: ${parseError.message}`);
       }
-      
-      console.log('Parsed data:', data);
-      
+
+      console.log("Parsed data:", data);
+
       // Cek struktur response Laravel
-      if (data.status === 'success') {
+      if (data.status === "success") {
         setTickets(data.data || []);
-        console.log('Tickets loaded:', data.data?.length || 0);
+        console.log("Tickets loaded:", data.data?.length || 0);
       } else {
-        throw new Error(data.message || 'API returned error status');
+        throw new Error(data.message || "API returned error status");
       }
-      
     } catch (err) {
-      const errorMsg = err.message || 'Unknown error occurred';
+      const errorMsg = err.message || "Unknown error occurred";
       setError(errorMsg);
-      console.error('Complete error details:', {
+      console.error("Complete error details:", {
         error: err,
         message: errorMsg,
-        stack: err.stack
+        stack: err.stack,
       });
     } finally {
       setLoading(false);
@@ -115,10 +124,10 @@ export default function LandingPage() {
 
   // Fungsi untuk format harga
   const formatPrice = (price) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      minimumFractionDigits: 0,
     }).format(price);
   };
 
@@ -208,16 +217,16 @@ export default function LandingPage() {
               <div className="font-bold mb-2">Error Details:</div>
               <div className="text-sm whitespace-pre-line">{error}</div>
               <div className="mt-4 flex gap-2">
-                <button 
+                <button
                   onClick={fetchTickets}
                   className="bg-red-700 text-white px-4 py-2 rounded text-sm hover:bg-red-800"
                 >
                   Coba Lagi
                 </button>
-                <button 
+                <button
                   onClick={() => {
                     // Test direct API call
-                    window.open('http://localhost:8000/api/tickets', '_blank');
+                    window.open("http://localhost:8000/api/tickets", "_blank");
                   }}
                   className="bg-blue-700 text-white px-4 py-2 rounded text-sm hover:bg-blue-800"
                 >
@@ -237,7 +246,7 @@ export default function LandingPage() {
                 >
                   {/* Gambar */}
                   <img
-                    src={ticket.image_url || '/default-ticket-image.jpg'}
+                    src={ticket.image_url || "/default-ticket-image.jpg"}
                     alt={ticket.ticket_name || ticket.title}
                     className="w-full h-48 object-cover"
                   />
@@ -255,7 +264,10 @@ export default function LandingPage() {
                       )}
                       {ticket.event_date && (
                         <p className="text-white text-xs mt-2">
-                          📅 {new Date(ticket.event_date).toLocaleDateString('id-ID')}
+                          📅{" "}
+                          {new Date(ticket.event_date).toLocaleDateString(
+                            "id-ID"
+                          )}
                         </p>
                       )}
                     </div>
@@ -265,7 +277,8 @@ export default function LandingPage() {
                       <div>
                         {(ticket.quantity_available || ticket.stock) > 0 ? (
                           <p className="text-white text-xs">
-                            Sisa: {ticket.quantity_available || ticket.stock} tiket
+                            Sisa: {ticket.quantity_available || ticket.stock}{" "}
+                            tiket
                           </p>
                         ) : (
                           <p className="text-red-200 text-xs font-semibold">
@@ -282,19 +295,22 @@ export default function LandingPage() {
                     <button
                       className={`mt-3 w-full py-2 rounded text-sm font-semibold transition ${
                         (ticket.quantity_available || ticket.stock) > 0
-                          ? 'bg-white text-red-600 hover:bg-gray-100'
-                          : 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                          ? "bg-white text-red-600 hover:bg-gray-100"
+                          : "bg-gray-400 text-gray-600 cursor-not-allowed"
                       }`}
-                      disabled={(ticket.quantity_available || ticket.stock) === 0}
+                      disabled={
+                        (ticket.quantity_available || ticket.stock) === 0
+                      }
                       onClick={() => {
-                        // Handle pembelian tiket
                         if ((ticket.quantity_available || ticket.stock) > 0) {
-                          console.log('Beli tiket:', ticket.id);
-                          // Redirect ke halaman checkout atau buka modal
+                          // Navigasi ke DetailTicket dengan ID tiket
+                          navigate('/ticket');
                         }
                       }}
                     >
-                      {(ticket.quantity_available || ticket.stock) > 0 ? 'Beli Sekarang' : 'Habis'}
+                      {(ticket.quantity_available || ticket.stock) > 0
+                        ? "Beli Sekarang"
+                        : "Habis"}
                     </button>
                   </div>
                 </div>

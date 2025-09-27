@@ -14,6 +14,7 @@ import DetailKomentar from './pages/DetailKomentar';
 import Profile from './pages/profile.jsx';
 import AuthCallback from './pages/AuthCallback';
 import { AuthProvider } from './context/AuthContext';
+import DetailTicket from './pages/DetailTicket.jsx';
 import { AnimatePresence, motion } from "framer-motion";
 
 function AppRoutes() {
@@ -50,6 +51,7 @@ function AppRoutes() {
               <Route path="/detailkomentar" element={<DetailKomentar />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/auth/callback" element={<AuthCallback />} />
+              <Route path="/detail-ticket" element={<DetailTicket />} />
             </Routes>
           </motion.div>
         </AnimatePresence>
@@ -66,6 +68,7 @@ function AppRoutes() {
           <Route path="/detailkomentar" element={<DetailKomentar />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
+          <Route path="/detail-ticket" element={<DetailTicket />} />
         </Routes>
       )}
     </>

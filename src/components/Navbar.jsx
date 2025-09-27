@@ -114,7 +114,7 @@ export default function Navbar({ transparent = false }) {
         </nav>
 
         <Link
-          to="/ticket"
+          to="/detail-ticket"
           className={`px-4 py-2 rounded-md text-sm transition duration-300 ${
             showTransparent
               ? "bg-white/20 hover:bg-red-500 text-white backdrop-blur"
