@@ -9,7 +9,6 @@ export default function LandingPage() {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
 
   // Data komentar dummy (tetap sama)
   const comments = [
@@ -203,11 +202,121 @@ export default function LandingPage() {
         <div className="mt-16">
           <h2 className="text-2xl font-bold mb-4">Beli Tiket</h2>
 
-          {/* Loading state */}
+          {/* Loading state - Design yang diperbaharui */}
           {loading && (
-            <div className="flex justify-center items-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-700"></div>
-              <span className="ml-3 text-gray-600">Memuat tiket...</span>
+            <div className="flex flex-col items-center justify-center py-16">
+              <div className="relative">
+                {/* Outer rotating ring */}
+                <div className="w-16 h-16 border-4 border-red-200 rounded-full animate-spin">
+                  <div className="absolute top-0 left-0 w-4 h-4 bg-red-600 rounded-full transform -translate-x-2 -translate-y-2"></div>
+                </div>
+
+                {/* Inner pulsing dot */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+                </div>
+
+                {/* Multiple ticket icons floating */}
+                <div
+                  className="absolute -top-2 -left-2 w-6 h-6 text-red-400 animate-bounce"
+                  style={{ animationDelay: "0s" }}
+                >
+                  <svg fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      fillRule="evenodd"
+                      d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+
+                <div
+                  className="absolute -top-2 -right-2 w-5 h-5 text-red-300 animate-bounce"
+                  style={{ animationDelay: "0.2s" }}
+                >
+                  <svg fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      fillRule="evenodd"
+                      d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+
+                <div
+                  className="absolute -bottom-2 -left-2 w-4 h-4 text-red-500 animate-bounce"
+                  style={{ animationDelay: "0.4s" }}
+                >
+                  <svg fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      fillRule="evenodd"
+                      d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+
+                <div
+                  className="absolute -bottom-2 -right-2 w-5 h-5 text-red-400 animate-bounce"
+                  style={{ animationDelay: "0.6s" }}
+                >
+                  <svg fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      fillRule="evenodd"
+                      d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+              </div>
+
+              {/* Loading text with typing animation */}
+              <div className="mt-6 text-center">
+                <h3 className="text-lg font-semibold text-gray-700 mb-2">
+                  Memuat Tiket
+                </h3>
+                <div className="flex items-center justify-center gap-1">
+                  <span className="text-gray-500">
+                    Sedang mencari tiket terbaik untuk Anda
+                  </span>
+                  <div className="flex gap-1 ml-2">
+                    <div
+                      className="w-2 h-2 bg-red-500 rounded-full animate-bounce"
+                      style={{ animationDelay: "0s" }}
+                    ></div>
+                    <div
+                      className="w-2 h-2 bg-red-500 rounded-full animate-bounce"
+                      style={{ animationDelay: "0.1s" }}
+                    ></div>
+                    <div
+                      className="w-2 h-2 bg-red-500 rounded-full animate-bounce"
+                      style={{ animationDelay: "0.2s" }}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Progress bar */}
+              <div className="mt-4 w-64 bg-gray-200 rounded-full h-2 overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-red-400 to-red-600 rounded-full animate-pulse"></div>
+              </div>
+
+              {/* Loading skeleton cards preview */}
+              <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-4xl opacity-30">
+                {[1, 2, 3].map((index) => (
+                  <div
+                    key={index}
+                    className="bg-white rounded-2xl overflow-hidden shadow-lg animate-pulse"
+                  >
+                    <div className="h-32 bg-gray-200"></div>
+                    <div className="p-4">
+                      <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                      <div className="h-3 bg-gray-200 rounded mb-3 w-2/3"></div>
+                      <div className="h-8 bg-gray-200 rounded"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
@@ -225,7 +334,6 @@ export default function LandingPage() {
                 </button>
                 <button
                   onClick={() => {
-                    // Test direct API call
                     window.open("http://localhost:8000/api/tickets", "_blank");
                   }}
                   className="bg-blue-700 text-white px-4 py-2 rounded text-sm hover:bg-blue-800"
@@ -236,81 +344,113 @@ export default function LandingPage() {
             </div>
           )}
 
-          {/* Tampilan tiket dari database */}
+          {/* Tampilan tiket dari database - Design yang diperbaharui */}
           {!loading && !error && tickets.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
               {tickets.map((ticket) => (
                 <div
                   key={ticket.id}
-                  className="min-w-60 rounded-xl overflow-hidden shadow-md transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                  className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transform transition-all duration-300 hover:scale-102 border border-gray-100"
                 >
-                  {/* Gambar */}
-                  <img
-                    src={ticket.image_url || "/default-ticket-image.jpg"}
-                    alt={ticket.ticket_name || ticket.title}
-                    className="w-full h-48 object-cover"
-                  />
+                  {/* Header dengan gambar */}
+                  <div className="relative h-48 overflow-hidden">
+                    <img
+                      src={ticket.image_url || "/default-ticket-image.jpg"}
+                      alt={ticket.ticket_name || ticket.title}
+                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                      onError={(e) => {
+                        e.target.src = "/default-ticket-image.jpg";
+                      }}
+                    />
+                    {/* Overlay gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
 
-                  <div className="bg-red-600 p-4 h-auto flex flex-col justify-between">
-                    {/* Judul dan deskripsi */}
-                    <div className="mb-3">
-                      <p className="font-bold text-white text-lg mb-1">
-                        {ticket.ticket_name || ticket.title}
+                    {/* Price badge */}
+                    <div className="absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
+                      {formatPrice(ticket.price)}
+                    </div>
+                  </div>
+
+                  {/* Content area */}
+                  <div className="p-5">
+                    {/* Title */}
+                    <h3 className="font-bold text-gray-800 text-lg mb-2 line-clamp-2">
+                      {ticket.ticket_name || ticket.title}
+                    </h3>
+
+                    {/* Description */}
+                    {ticket.description && (
+                      <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                        {ticket.description}
                       </p>
-                      {ticket.description && (
-                        <p className="text-white text-sm opacity-90">
-                          {ticket.description}
-                        </p>
-                      )}
+                    )}
+
+                    {/* Event info */}
+                    <div className="space-y-2 mb-4">
                       {ticket.event_date && (
-                        <p className="text-white text-xs mt-2">
-                          📅{" "}
+                        <div className="flex items-center gap-2 text-gray-500 text-sm">
+                          <svg
+                            className="w-4 h-4"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
                           {new Date(ticket.event_date).toLocaleDateString(
                             "id-ID"
                           )}
-                        </p>
+                        </div>
                       )}
-                    </div>
 
-                    {/* Harga dan status */}
-                    <div className="flex justify-between items-end">
-                      <div>
+                      {/* Stock info */}
+                      <div className="flex items-center gap-2 text-gray-500 text-sm">
+                        <svg
+                          className="w-4 h-4"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
                         {(ticket.quantity_available || ticket.stock) > 0 ? (
-                          <p className="text-white text-xs">
-                            Sisa: {ticket.quantity_available || ticket.stock}{" "}
+                          <span>
+                            Tersedia {ticket.quantity_available || ticket.stock}{" "}
                             tiket
-                          </p>
+                          </span>
                         ) : (
-                          <p className="text-red-200 text-xs font-semibold">
+                          <span className="text-red-500 font-medium">
                             Sold Out
-                          </p>
+                          </span>
                         )}
                       </div>
-                      <p className="text-right font-semibold text-white text-lg">
-                        {formatPrice(ticket.price)}
-                      </p>
                     </div>
 
-                    {/* Tombol beli */}
+                    {/* Action button */}
                     <button
-                      className={`mt-3 w-full py-2 rounded text-sm font-semibold transition ${
+                      className={`w-full py-3 px-4 rounded-xl font-semibold text-sm transition-all duration-200 ${
                         (ticket.quantity_available || ticket.stock) > 0
-                          ? "bg-white text-red-600 hover:bg-gray-100"
-                          : "bg-gray-400 text-gray-600 cursor-not-allowed"
+                          ? "bg-red-600 hover:bg-red-700 text-white shadow-md hover:shadow-lg active:scale-95"
+                          : "bg-gray-200 text-gray-500 cursor-not-allowed"
                       }`}
                       disabled={
                         (ticket.quantity_available || ticket.stock) === 0
                       }
                       onClick={() => {
                         if ((ticket.quantity_available || ticket.stock) > 0) {
-                          // Navigasi ke DetailTicket dengan ID tiket
-                          navigate('/ticket');
+                          navigate("/ticket");
                         }
                       }}
                     >
                       {(ticket.quantity_available || ticket.stock) > 0
                         ? "Beli Sekarang"
-                        : "Habis"}
+                        : "Habis Terjual"}
                     </button>
                   </div>
                 </div>
@@ -318,13 +458,66 @@ export default function LandingPage() {
             </div>
           )}
 
-          {/* Jika tidak ada tiket */}
+          {/* Jika tidak ada tiket - Design yang diperbaharui */}
           {!loading && !error && tickets.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-gray-500 text-lg">Belum ada tiket tersedia</p>
-              <p className="text-gray-400 text-sm mt-2">
-                Pantau terus untuk update tiket terbaru!
-              </p>
+            <div className="text-center py-16">
+              <div className="max-w-md mx-auto">
+                {/* Icon */}
+                <div className="w-24 h-24 mx-auto mb-6 bg-red-50 rounded-full flex items-center justify-center">
+                  <svg
+                    className="w-12 h-12 text-red-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"
+                    />
+                  </svg>
+                </div>
+
+                {/* Title */}
+                <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                  Belum Ada Tiket Tersedia
+                </h3>
+
+                {/* Description */}
+                <p className="text-gray-600 mb-6 leading-relaxed">
+                  Saat ini belum ada tiket yang tersedia untuk dijual. Pantau
+                  terus halaman ini untuk mendapatkan update tiket terbaru dari
+                  Remaja Tengah!
+                </p>
+
+                {/* Action buttons */}
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <button
+                    onClick={() => window.location.reload()}
+                    className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
+                  >
+                    Refresh Halaman
+                  </button>
+                  <button
+                    onClick={() => {
+                      /* Navigate to newsletter signup */
+                    }}
+                    className="border border-red-600 text-red-600 hover:bg-red-50 px-6 py-2 rounded-lg font-semibold transition-colors"
+                  >
+                    Beritahu Saat Ada Tiket
+                  </button>
+                </div>
+
+                {/* Additional info */}
+                <div className="mt-8 p-4 bg-gray-50 rounded-lg">
+                  <p className="text-sm text-gray-500">
+                    Ingin tahu lebih dulu saat ada tiket baru? Ikuti media
+                    sosial kami atau subscribe newsletter untuk mendapat
+                    notifikasi pertama!
+                  </p>
+                </div>
+              </div>
             </div>
           )}
         </div>

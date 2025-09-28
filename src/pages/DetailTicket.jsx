@@ -1,24 +1,99 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 export default function DetailTicket() {
+   // Fetch tickets dari API
+  const fetchTickets = async () => {
+    try {
+      setTicketsLoading(true);
+      setTicketsError(null);
+      
+      const apiUrl = `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/tickets`;
+      console.log('Fetching tickets from:', apiUrl);
+      
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const responseText = await response.text();
+      
+      if (!responseText.trim()) {
+        throw new Error('Server mengembalikan response kosong');
+      }
+      
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch (parseError) {
+        throw new Error(`Invalid JSON response: ${parseError.message}`);
+      }
+      
+      if (data.status === 'success') {
+        setTickets(data.data || []);
+        console.log('Tickets loaded:', data.data?.length || 0);
+      } else {
+        throw new Error(data.message || 'API returned error status');
+      }
+      
+    } catch (err) {
+      setTicketsError(err.message);
+      console.error('Error fetching tickets:', err);
+    } finally {
+      setTicketsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTickets();
+  }, []);
+
+  // State untuk tickets dari API
+  const [tickets, setTickets] = useState([]);
+  const [ticketsLoading, setTicketsLoading] = useState(true);
+  const [ticketsError, setTicketsError] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
 
   // Mock data untuk demo (nanti bisa diganti dengan API)
   const mockTicket = {
     id: id,
-    ticket_name: "Indonesia Motorcycle Show 2025",
-    title: "Indonesia Motorcycle Show 2025",
-    description: "The premier motorcycle exhibition in Indonesia, showcasing the latest innovations, technologies, and products from leading motorcycle brands and industry players. Visitors can explore a wide range of motorcycles, accessories, riding gear, and supporting industries, while enjoying interactive programs, test rides, and special promotions.",
-    price: 150000,
-    event_date: "2025-09-24",
-    event_time: "09:00 - 18:00 WIB",
-    location: "ICE - BSD City",
-    address: "Jl. BSD Grand Boulevard Raya No.1, BSD City, Tangerang, 15339",
-    category: "Exhibition",
-    quantity_available: 500,
-    image_url: null
+    ticket_name: "Gebyar",
+    title: "Drama Musikal Cinta di Ujung Senja", 
+    description: "Pertunjukan drama musikal yang mengisahkan tentang cinta yang tumbuh di masa-masa sulit. Sebuah karya yang memadukan akting, musik, dan tari dalam satu pertunjukan yang memukau.",
+    price: 15000,
+    event_date: "2025-10-05",
+    event_time: "19:00 - 21:00 WIB", 
+    location: "SMKN 2 SUKABUMI",
+    address: "Jl. Raya Sukabumi No.123, Sukabumi, Jawa Barat",
+    category: "Drama Musikal",
+    quantity_available: 15,
+    image_url: "storage/tickets/gebyar.jpg" // Sesuaikan dengan path dari backend
+  };
+
+  // Helper function untuk build image URL
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return null;
+    
+    if (imagePath.startsWith('http')) {
+      return imagePath;
+    }
+    
+    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    
+    if (imagePath.startsWith('storage/')) {
+      return `${baseUrl}/${imagePath}`;
+    }
+    
+    return `${baseUrl}/${imagePath}`;
   };
 
   // Format price
@@ -31,7 +106,7 @@ export default function DetailTicket() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-24 px-4 mt-7">
+    <div className="min-h-screen bg-gray-50 pt-24 px-4">
       {/* Back Button */}
       <div className="max-w-4xl mx-auto mb-4">
         <button
@@ -174,24 +249,143 @@ export default function DetailTicket() {
               </div>
             </div>
 
-            {/* Action Buttons */}
-            <div className="mt-8 flex gap-3 justify-center md:justify-start">
-              <button 
-                className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
-                onClick={() => {
-                  console.log('Proceed to checkout for ticket:', mockTicket.id);
-                  // Nanti bisa navigate ke halaman checkout
-                }}
-              >
-                Beli Tiket Sekarang
-              </button>
+            {/* Action Buttons - DIHAPUS */}
+            
+          </div>
+        </div>
+
+        {/* Ticket Section */}
+        <div className="mt-8">
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div className="p-6">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4 border-l-4 border-yellow-500 pl-3">
+                Pilih Tiket
+              </h3>
               
-              <button
-                onClick={() => navigate('/')}
-                className="border border-gray-300 hover:border-gray-400 text-gray-700 hover:text-gray-800 px-8 py-3 rounded-lg font-semibold transition-colors"
-              >
-                Kembali ke Beranda
-              </button>
+              {/* Loading state untuk tickets */}
+              {ticketsLoading && (
+                <div className="flex justify-center items-center py-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-700"></div>
+                  <span className="ml-3 text-gray-600">Memuat pilihan tiket...</span>
+                </div>
+              )}
+
+              {/* Error state untuk tickets */}
+              {ticketsError && (
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                  <p className="text-sm">{ticketsError}</p>
+                  <button 
+                    onClick={fetchTickets}
+                    className="mt-2 bg-red-700 text-white px-3 py-1 rounded text-sm hover:bg-red-800"
+                  >
+                    Coba Lagi
+                  </button>
+                </div>
+              )}
+              
+              {/* Tampilan tickets dari database */}
+              {!ticketsLoading && !ticketsError && tickets.length > 0 && (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {tickets.map((ticket) => (
+                    <div 
+                      key={ticket.id}
+                      className="bg-gradient-to-b from-red-400 to-red-600 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 hover:scale-102"
+                    >
+                      <div className="p-4 text-white relative">
+                        {/* Decorative elements */}
+                        <div className="absolute top-2 left-2">
+                          <div className="w-3 h-3 bg-white bg-opacity-30 rounded-full"></div>
+                        </div>
+                        <div className="absolute top-2 right-2">
+                          <div className="w-3 h-3 bg-white bg-opacity-30 rounded-full"></div>
+                        </div>
+                        
+                        {/* Ticket image if available */}
+                        {ticket.image_url && (
+                          <div className="mb-3">
+                            <img
+                              src={getImageUrl(ticket.image_url)}
+                              alt={ticket.ticket_name || ticket.title}
+                              className="w-full h-20 object-cover rounded opacity-80"
+                              onError={(e) => {
+                                e.target.style.display = 'none';
+                              }}
+                            />
+                          </div>
+                        )}
+                        
+                        <div className="text-center mb-3">
+                          <div className="text-xs font-semibold bg-black bg-opacity-30 rounded-full px-2 py-1 mb-2">
+                            {ticket.category?.toUpperCase() || 'EVENT TICKET'}
+                          </div>
+                          <div className="text-lg font-bold mb-1">
+                            {(ticket.ticket_name || ticket.title || '').split(' ')[0]?.toUpperCase()}
+                          </div>
+                          <div className="text-lg font-bold mb-1">
+                            {(ticket.ticket_name || ticket.title || '').split(' ')[1]?.toUpperCase()}
+                          </div>
+                          <div className="text-lg font-bold">
+                            {(ticket.ticket_name || ticket.title || '').split(' ').slice(2).join(' ').toUpperCase()}
+                          </div>
+                        </div>
+                        
+                        <div className="text-center">
+                          <div className="text-2xl font-bold mb-1">{formatPrice(ticket.price)}</div>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-white p-4">
+                        <div className="text-center">
+                          <div className="font-semibold text-gray-800 mb-2">
+                            {ticket.ticket_name || ticket.title}
+                          </div>
+                          <div className="text-sm text-gray-600 mb-3">
+                            {ticket.event_date ? 
+                              new Date(ticket.event_date).toLocaleDateString('id-ID', {
+                                day: 'numeric',
+                                month: 'long'
+                              }) : 
+                              'Tanggal akan diumumkan'
+                            }
+                          </div>
+                          <div className="text-xs text-gray-500 mb-3">
+                            Sisa: {ticket.quantity_available || ticket.stock || 0} tiket
+                          </div>
+                          <button 
+                            className={`w-full font-semibold py-2 px-4 rounded transition-colors ${
+                              (ticket.quantity_available || ticket.stock) > 0
+                                ? 'bg-red-500 hover:bg-red-600 text-white'
+                                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                            }`}
+                            disabled={(ticket.quantity_available || ticket.stock) === 0}
+                            onClick={() => {
+                              if ((ticket.quantity_available || ticket.stock) > 0) {
+                                console.log(`Tiket ${ticket.id} dipilih`);
+                                // Navigate to checkout atau buka modal pembayaran
+                              }
+                            }}
+                          >
+                            {(ticket.quantity_available || ticket.stock) > 0 ? 'Pilih Tiket' : 'Habis'}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Jika tidak ada tiket */}
+              {!ticketsLoading && !ticketsError && tickets.length === 0 && (
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+                    <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                    </svg>
+                  </div>
+                  <p className="text-gray-500 text-lg mb-2">Belum Ada Tiket Tersedia</p>
+                  <p className="text-gray-400 text-sm">Pilihan tiket akan segera tersedia</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
