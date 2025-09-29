@@ -444,7 +444,9 @@ export default function LandingPage() {
                       }
                       onClick={() => {
                         if ((ticket.quantity_available || ticket.stock) > 0) {
-                          navigate("/ticket");
+                          // PENTING: Kirim ticket ID lewat URL parameter
+                          navigate(`/ticket?ticketId=${ticket.id}`);
+                          console.log("🚀 Navigating to ticket ID:", ticket.id);
                         }
                       }}
                     >
