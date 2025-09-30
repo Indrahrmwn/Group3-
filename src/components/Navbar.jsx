@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import LogoPutih from "../assets/Gambar Website/tes.png";
 import LogoHitam from "../assets/Gambar Website/remajatengah.png";
@@ -160,6 +159,24 @@ export default function Navbar({ transparent = false }) {
                   <div className="px-4 py-2 border-b border-gray-100">
                     <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Learn More</p>
                   </div>
+                  
+                  {/* About Menu Item */}
+                  <Link
+                    to="/about"
+                    className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 hover:text-red-700 transition-all duration-200 group"
+                    onClick={() => setAboutDropdownOpen(false)}
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors duration-200">
+                      <svg className="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="font-medium">About Us</p>
+                      <p className="text-xs text-gray-500">Learn about our community</p>
+                    </div>
+                  </Link>
+
                   <Link
                     to="/contact"
                     className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 hover:text-red-700 transition-all duration-200 group"
@@ -175,6 +192,7 @@ export default function Navbar({ transparent = false }) {
                       <p className="text-xs text-gray-500">Get in touch with our team</p>
                     </div>
                   </Link>
+                  
                   <Link
                     to="/divisi"
                     className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 hover:text-red-700 transition-all duration-200 group"
