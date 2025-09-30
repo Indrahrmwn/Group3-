@@ -15,6 +15,7 @@ import Profile from './pages/profile.jsx';
 import AuthCallback from './pages/AuthCallback';
 import { AuthProvider } from './context/AuthContext';
 import DetailTicket from './pages/DetailTicket.jsx';
+import ContactPage from './pages/Contact.jsx';
 import { AnimatePresence, motion } from "framer-motion";
 
 function AppRoutes() {
@@ -52,6 +53,7 @@ function AppRoutes() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="/detail-ticket" element={<DetailTicket />} />
+              <Route path="/contact" element={<ContactPage />} />
             </Routes>
           </motion.div>
         </AnimatePresence>
@@ -69,6 +71,7 @@ function AppRoutes() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/detail-ticket" element={<DetailTicket />} />
+          <Route path="/contact" element={<ContactPage />} />
         </Routes>
       )}
     </>
