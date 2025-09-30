@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Gambar from "/src/assets/Gambar Website/teater 2.jpg";
+import Gambar2 from "/src/assets/Gambar Website/Rectangle 241.jpg";
 
 export default function About() {
   const [likes, setLikes] = useState({
@@ -61,13 +63,9 @@ export default function About() {
       <div
         className="relative h-64 md:h-80 bg-cover bg-center flex items-center justify-center"
         style={{
-          backgroundImage: `url("/berita-1.png")`,
+          backgroundImage: `url(${Gambar})`,
         }}
       >
-        <div className="absolute inset-0 bg-black/40"></div>
-        <h1 className="relative text-white text-3xl md:text-5xl font-bold drop-shadow-2xl">
-          Tentang Remaja Tengah
-        </h1>
       </div>
 
       {/* Bagian: Remaja Tengah */}
@@ -95,7 +93,7 @@ export default function About() {
           <div className="relative group">
             <div className="bg-gradient-to-br from-red-100 to-red-200 w-full h-80 rounded-2xl flex items-center justify-center overflow-hidden shadow-xl">
               <img
-                src="/src/assets/Gambar Website/about-image.jpg"
+                src={Gambar2}
                 alt="Remaja Tengah"
                 className="w-full h-full object-cover"
                 onError={(e) => {
