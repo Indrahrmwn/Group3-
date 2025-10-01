@@ -1,20 +1,31 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Gambar from "../assets/Gambar Website/undraw_people_ka7y.png";
-import { motion } from "framer-motion";
+import { useNavigate, Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import { ArrowLeft } from "lucide-react";
+import BackgroundImage from "../assets/Gambar Website/Rectangle 256.jpg";
+import GambarIlustrasi from "../assets/Gambar Website/ilustrasilogin.png";
 
 export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [agree, setAgree] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = () => navigate("/login");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!agree) {
+      Swal.fire({
+        icon: "warning",
+        title: "Oops...",
+        text: "Kamu harus menyetujui syarat & ketentuan terlebih dahulu!",
+      });
+      return;
+    }
 
     if (password !== confirmPassword) {
       Swal.fire({
@@ -26,14 +37,11 @@ export default function Register() {
     }
 
     try {
-      // tampilkan loading modal
       Swal.fire({
         title: "Membuat akun...",
         html: "Mohon tunggu sebentar",
         allowOutsideClick: false,
-        didOpen: () => {
-          Swal.showLoading();
-        },
+        didOpen: () => Swal.showLoading(),
       });
 
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/register`, {
@@ -52,11 +60,9 @@ export default function Register() {
       const data = await res.json();
 
       if (!res.ok) {
-        const errorMessage = data.message || "Gagal mendaftar";
-        throw new Error(errorMessage);
+        throw new Error(data.message || "Gagal mendaftar");
       }
 
-      // tutup loading dan munculkan sukses
       Swal.fire({
         icon: "success",
         title: "Berhasil!",
@@ -66,9 +72,7 @@ export default function Register() {
       });
 
       setTimeout(() => navigate("/login"), 1500);
-      
     } catch (err) {
-      console.error("Error:", err);
       Swal.fire({
         icon: "error",
         title: "Gagal",
@@ -77,118 +81,143 @@ export default function Register() {
     }
   };
 
-  const handleCancel = () => {
-    setName("");
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
-  };
-
   return (
-    <div className="bg-white grid grid-cols-2 w-screen h-screen">
-      {/* Panel gambar kiri */}
-      <div className="flex items-center justify-center relative">
-        <div className="absolute top-0 left-0 w-[150px] h-[150px] bg-[#c53030] rounded-br-full" />
-        <img
-          src={Gambar}
-          className="w-[300px] h-auto object-contain"
-          alt="Ilustrasi"
-        />
-      </div>
-
-      {/* Panel merah kanan (form) */}
-      <motion.div
-        key="registerForm"
-        initial={{ x: "100%", opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        exit={{ x: "-100%", opacity: 0 }}
-        transition={{ duration: 0.6, ease: "easeInOut" }}
-        className="bg-[#c53030] flex flex-col justify-center px-20 relative"
-      >
-        <h1 className="text-white text-3xl font-bold mb-6">Daftar Akun</h1>
-
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label className="block font-semibold text-white text-base mb-1">
-              Masukan Username
-            </label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full h-[47px] bg-white rounded-xl px-3 text-black focus:outline-none focus:ring-4 focus:ring-[#f87171] shadow-md transition-all"
-              required
+    <div className="bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center min-h-screen p-4">
+      <div className="bg-white rounded-3xl shadow-2xl overflow-hidden w-full max-w-4xl lg:h-[550px] grid grid-cols-1 lg:grid-cols-2">
+        {/* Panel Kiri - Background + Ilustrasi */}
+        <div className="relative flex items-center justify-center bg-gray-50 p-6">
+          <img
+            src={BackgroundImage}
+            alt="Background Register"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <div className="relative z-10 flex items-center justify-center w-full h-full">
+            <img
+              src={GambarIlustrasi}
+              alt="Ilustrasi Register"
+              className="max-h-full w-auto object-contain"
             />
           </div>
+        </div>
 
-          <div>
-            <label className="block font-semibold text-white text-base mb-1">
-              Masukan Email
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full h-[47px] bg-white rounded-xl px-3 text-black focus:outline-none focus:ring-4 focus:ring-[#f87171] shadow-md transition-all"
-              required
-            />
+        {/* Panel Kanan - Form */}
+        <div className="bg-gradient-to-br from-red-600 to-red-700 p-6 md:p-8 flex flex-col justify-center relative">
+          {/* Tombol kembali */}
+          <div className="absolute top-4 left-4">
+            <Link to="/" className="flex items-center text-white text-sm hover:underline">
+              <ArrowLeft className="w-4 h-4 mr-1" /> Kembali
+            </Link>
           </div>
 
-          <div>
-            <label className="block font-semibold text-white text-base mb-1">
-              Masukan Password
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full h-[47px] bg-white rounded-xl px-3 text-black focus:outline-none focus:ring-4 focus:ring-[#f87171] shadow-md transition-all"
-              required
-            />
+          <div className="text-center mb-6 mt-6">
+            <h1 className="text-white text-xl font-bold">DAFTAR AKUN</h1>
+            <p className="text-xs text-red-100">Buat akun barumu sekarang</p>
           </div>
 
-          <div>
-            <label className="block font-semibold text-white text-base mb-1">
-              Verifikasi Password
-            </label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full h-[47px] bg-white rounded-xl px-3 text-black focus:outline-none focus:ring-4 focus:ring-[#f87171] shadow-md transition-all"
-              required
-            />
-          </div>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Username */}
+            <div>
+              <label className="block text-white text-xs font-semibold mb-1">
+                Masukan Username
+              </label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full h-10 bg-white rounded-lg px-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-300 shadow"
+                placeholder="spiderman123"
+                required
+              />
+            </div>
 
-          <div className="flex items-center text-white font-semibold space-x-2 text-base">
-            <span>Sudah Punya Akun?</span>
-            <button
-              type="button"
-              onClick={handleLogin}
-              className="hover:underline hover:text-gray-200 transition-colors"
-            >
-              Login Sekarang
-            </button>
-          </div>
+            {/* Email */}
+            <div>
+              <label className="block text-white text-xs font-semibold mb-1">
+                Masukan Email
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full h-10 bg-white rounded-lg px-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-300 shadow"
+                placeholder="spiderman@gmail.com"
+                required
+              />
+            </div>
 
-          <div className="flex space-x-4 pt-4">
-            <button
-              type="button"
-              onClick={handleCancel}
-              className="px-8 py-2 bg-white text-[#c53030] font-semibold rounded-[30px] hover:bg-gray-100 hover:scale-105 transition-transform shadow"
-            >
-              Batal
-            </button>
+            {/* Password */}
+            <div>
+              <label className="block text-white text-xs font-semibold mb-1">
+                Masukan Password
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full h-10 bg-white rounded-lg px-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-300 shadow"
+                placeholder="••••••••"
+                required
+              />
+            </div>
 
+            {/* Konfirmasi Password */}
+            <div>
+              <label className="block text-white text-xs font-semibold mb-1">
+                Verifikasi Password
+              </label>
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full h-10 bg-white rounded-lg px-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-300 shadow"
+                placeholder="••••••••"
+                required
+              />
+            </div>
+
+            {/* Checkbox Persetujuan */}
+            <div className="flex items-start gap-2">
+              <input
+                type="checkbox"
+                checked={agree}
+                onChange={(e) => setAgree(e.target.checked)}
+                className="mt-1"
+                required
+              />
+              <span className="text-white text-xs">
+                Saya Setuju dengan{" "}
+                <a href="#" className="underline">
+                  Syarat & Ketentuan
+                </a>{" "}
+                dan{" "}
+                <a href="#" className="underline">
+                  Kebijakan Privasi
+                </a>
+              </span>
+            </div>
+
+            {/* Link ke login */}
+            <div className="text-center mt-2">
+              <span className="text-white text-xs">Sudah punya akun? </span>
+              <button
+                type="button"
+                onClick={handleLogin}
+                className="text-white font-bold text-xs hover:underline"
+              >
+                Login Sekarang
+              </button>
+            </div>
+
+            {/* Tombol */}
             <button
               type="submit"
-              className="px-8 py-2 bg-white text-[#c53030] font-semibold rounded-[30px] hover:bg-gray-100 hover:scale-105 transition-transform shadow"
+              className="w-full h-10 bg-white text-red-600 text-sm font-bold rounded-full hover:bg-gray-50 shadow"
             >
               Daftar
             </button>
-          </div>
-        </form>
-      </motion.div>
+          </form>
+        </div>
+      </div>
     </div>
   );
 }

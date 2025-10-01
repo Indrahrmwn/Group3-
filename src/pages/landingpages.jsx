@@ -9,6 +9,12 @@ export default function LandingPage() {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [counters, setCounters] = useState({
+    members: 0,
+    events: 0,
+    awards: 0,
+  });
+  const [isVisible, setIsVisible] = useState(false);
 
   // Data komentar dummy (tetap sama)
   const comments = [
@@ -186,6 +192,153 @@ export default function LandingPage() {
     },
   ];
 
+  useEffect(() => {
+    if (isVisible) {
+      const targets = { members: 150, events: 45, awards: 12 };
+      const duration = 2000;
+      const steps = 60;
+      const increment = {
+        members: targets.members / steps,
+        events: targets.events / steps,
+        awards: targets.awards / steps,
+      };
+
+      let currentStep = 0;
+      const timer = setInterval(() => {
+        currentStep++;
+        setCounters({
+          members: Math.min(
+            Math.floor(increment.members * currentStep),
+            targets.members
+          ),
+          events: Math.min(
+            Math.floor(increment.events * currentStep),
+            targets.events
+          ),
+          awards: Math.min(
+            Math.floor(increment.awards * currentStep),
+            targets.awards
+          ),
+        });
+
+        if (currentStep >= steps) clearInterval(timer);
+      }, duration / steps);
+
+      return () => clearInterval(timer);
+    }
+  }, [isVisible]);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
+  const benefits = [
+    {
+      icon: (
+        <svg
+          className="w-8 h-8"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+          />
+        </svg>
+      ),
+      title: "Skill Akting Praktis",
+      description:
+        "Teknik vokal, blocking, ekspresi, hingga kepercayaan diri di panggung & kamera",
+      gradient: "from-purple-500 to-purple-700",
+      bgColor: "bg-purple-50",
+      hoverColor: "hover:shadow-purple-200",
+    },
+    {
+      icon: (
+        <svg
+          className="w-8 h-8"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+          />
+        </svg>
+      ),
+      title: "Jejaring Kreatif",
+      description: "Kenalan dengan komunitas film, penulis, dan seniman lokal",
+      gradient: "from-blue-500 to-blue-700",
+      bgColor: "bg-blue-50",
+      hoverColor: "hover:shadow-blue-200",
+    },
+    {
+      icon: (
+        <svg
+          className="w-8 h-8"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+          />
+        </svg>
+      ),
+      title: "Portofolio Karya",
+      description:
+        "Ikut pementasan & produksi, dokumentasi rapi untuk CV/Beasiswa",
+      gradient: "from-green-500 to-green-700",
+      bgColor: "bg-green-50",
+      hoverColor: "hover:shadow-green-200",
+    },
+  ];
+
+  const testimonials = [
+    {
+      name: "Andi Setiawan",
+      role: "Aktor Teater",
+      image:
+        "https://ui-avatars.com/api/?name=Andi+Setiawan&background=dc2626&color=fff&size=128",
+      date: "15 Januari 2025",
+      comment:
+        "Lokakarya ini telah membantu saya mengembangkan kreativitas. Saya merasa lebih percaya diri di atas panggung daripada sebelumnya! Pengalaman yang luar biasa.",
+      stars: 5,
+      verified: true,
+    },
+    {
+      name: "Siti Nurhaliza",
+      role: "Sutradara Muda",
+      image:
+        "https://ui-avatars.com/api/?name=Siti+Nurhaliza&background=7c3aed&color=fff&size=128",
+      date: "8 Februari 2025",
+      comment:
+        "Komunitas yang sangat supportif! Saya belajar banyak tentang directing dan leadership. Tim yang solid dan mentor yang berpengalaman membuat proses belajar menjadi menyenangkan.",
+      stars: 5,
+      verified: true,
+    },
+    {
+      name: "Budi Pratama",
+      role: "Penulis Naskah",
+      image:
+        "https://ui-avatars.com/api/?name=Budi+Pratama&background=2563eb&color=fff&size=128",
+      date: "22 Februari 2025",
+      comment:
+        "Tempat terbaik untuk mengasah skill menulis naskah drama. Workshop rutin dan feedback konstruktif sangat membantu perkembangan saya sebagai penulis.",
+      stars: 5,
+      verified: true,
+    },
+  ];
+
   return (
     <>
       {/* Hero Section */}
@@ -220,40 +373,88 @@ export default function LandingPage() {
       </section>
 
       {/* Bagian bawah */}
-      <section className="bg-white px-20 md:px-16">
-        <div className="bg-red-700 -mx-8 md:-mx-16 py-20 py-24 md:py-32">
-          <div className="max-w-7xl mx-auto px-6">
-            <h2 className="text-2xl font-bold mb-8 text-white">
+      <div className="bg-gradient-to-br from-red-600 via-red-700 to-red-800 py-24 relative overflow-hidden w-full min-h-screen">
+      <section className="">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-yellow-300 rounded-full filter blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-pink-300 rounded-full filter blur-3xl"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          {/* Section Header */}
+          <div className="text-center mb-16">
+            <div className="inline-block bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-semibold mb-4">
+              🎭 Benefits
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
               Apa yang Kamu Dapat?
             </h2>
+            <p className="text-white/90 text-lg max-w-2xl mx-auto">
+              Bergabung bersama kami dan rasakan transformasi kreativitas Anda
+            </p>
+          </div>
 
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="bg-gray-200 rounded-3xl shadow-md p-6 hover:shadow-lg transition">
-                <h3 className="font-bold text-lg mb-2">Skill Akting Praktis</h3>
-                <p className="text-sm text-gray-700">
-                  Teknik vokal, blocking, ekspresi, hingga kepercayaan diri di
-                  panggung & kamera.
+          {/* Benefits Grid */}
+          <div className="grid md:grid-cols-3 gap-8 mb-16">
+            {benefits.map((benefit, index) => (
+              <div
+                key={index}
+                className={`bg-white rounded-3xl shadow-2xl p-8 transform transition-all duration-500 hover:scale-105 ${benefit.hoverColor} hover:shadow-2xl group`}
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                {/* Icon */}
+                <div
+                  className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${benefit.gradient} flex items-center justify-center mb-6 text-white group-hover:rotate-12 transition-transform duration-300`}
+                >
+                  {benefit.icon}
+                </div>
+
+                {/* Title */}
+                <h3 className="font-bold text-xl mb-3 text-gray-900">
+                  {benefit.title}
+                </h3>
+
+                {/* Description */}
+                <p className="text-gray-600 leading-relaxed">
+                  {benefit.description}
                 </p>
+
+                {/* Decorative line */}
+                <div
+                  className={`mt-6 h-1 w-16 bg-gradient-to-r ${benefit.gradient} rounded-full group-hover:w-full transition-all duration-300`}
+                ></div>
               </div>
+            ))}
+          </div>
 
-              <div className="bg-gray-200 rounded-3xl shadow-md p-6 hover:shadow-lg transition">
-                <h3 className="font-bold text-lg mb-2">Jejaring Kreatif</h3>
-                <p className="text-sm text-gray-700">
-                  Kenalan dengan komunitas film, penulis, dan seniman lokal.
-                </p>
+          {/* Statistics Counter */}
+          <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/20">
+            <div className="grid grid-cols-3 gap-8 text-center">
+              <div className="group">
+                <div className="text-5xl font-bold text-white mb-2 group-hover:scale-110 transition-transform">
+                  {counters.members}+
+                </div>
+                <div className="text-white/80 font-medium">Anggota Aktif</div>
               </div>
-
-              <div className="bg-gray-200 rounded-3xl shadow-md p-6 hover:shadow-lg transition">
-                <h3 className="font-bold text-lg mb-2">Portofolio Karya</h3>
-                <p className="text-sm text-gray-700">
-                  Ikut pementasan & produksi, dokumentasi rapi untuk
-                  CV/Beasiswa.
-                </p>
+              <div className="group">
+                <div className="text-5xl font-bold text-white mb-2 group-hover:scale-110 transition-transform">
+                  {counters.events}+
+                </div>
+                <div className="text-white/80 font-medium">Event Tahunan</div>
+              </div>
+              <div className="group">
+                <div className="text-5xl font-bold text-white mb-2 group-hover:scale-110 transition-transform">
+                  {counters.awards}+
+                </div>
+                <div className="text-white/80 font-medium">Penghargaan</div>
               </div>
             </div>
           </div>
         </div>
+      </section>
+      </div>
 
+        <section className="bg-white py-24 px-8 md:px-16">
         {/* Beli tiket - Dengan data dari database */}
         <div className="mt-16">
           <h2 className="text-2xl font-bold mb-4">Beli Tiket</h2>
@@ -581,77 +782,297 @@ export default function LandingPage() {
         </div>
 
         {/* Komentar User */}
-        <div className="bg-red-700 -mx-8 md:-mx-16 mt-20 py-12 px-6 md:px-16 py-24 md:py-32">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-white text-2xl font-bold">Komentar User</h2>
+        <div className="max-w-7xl mx-auto px-6 mt-20">
+          {/* Header */}
+          <div className="flex flex-col md:flex-row justify-between items-center mb-12">
+            <div>
+              <div className="inline-block bg-red-100 text-red-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                ⭐ Testimonials
+              </div>
+              <h2 className="text-4xl font-bold text-gray-900 mb-2">
+                Apa Kata Mereka?
+              </h2>
+              <p className="text-gray-600 text-lg">
+                Cerita inspiratif dari anggota komunitas kami
+              </p>
+            </div>
             <Link
               to="/detailkomentar"
-              className="bg-red-800 hover:bg-red-900 text-white px-4 py-2 rounded-md text-sm transition"
+              className="mt-6 md:mt-0 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-red-500/50 flex items-center gap-2 group"
             >
-              Lihat Lainnya →
+              Lihat Semua Testimoni
+              <svg
+                className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 7l5 5m0 0l-5 5m5-5H6"
+                />
+              </svg>
             </Link>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {comments.map((item, index) => (
+          {/* Testimonials Grid */}
+          <div className="grid md:grid-cols-3 gap-8">
+            {testimonials.map((item, index) => (
               <div
                 key={index}
-                className="bg-white rounded-xl shadow-md p-6 flex flex-col justify-between"
+                className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 p-8 border border-gray-100 relative overflow-hidden group"
               >
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center text-xl">
-                    👤
+                {/* Quote decoration */}
+                <div className="absolute top-4 right-4 text-red-100 opacity-50 group-hover:opacity-100 transition-opacity">
+                  <svg
+                    className="w-16 h-16"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                  </svg>
+                </div>
+
+                {/* Profile */}
+                <div className="flex items-center gap-4 mb-6 relative z-10">
+                  <div className="relative">
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="w-16 h-16 rounded-full ring-4 ring-red-100 group-hover:ring-red-200 transition-all"
+                    />
+                    {item.verified && (
+                      <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center ring-2 ring-white">
+                        <svg
+                          className="w-4 h-4 text-white"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                    )}
                   </div>
                   <div>
-                    <p className="font-bold text-sm">{item.name}</p>
-                    <p className="text-xs text-gray-600">{item.date}</p>
+                    <p className="font-bold text-gray-900 text-lg">
+                      {item.name}
+                    </p>
+                    <p className="text-sm text-red-600 font-medium">
+                      {item.role}
+                    </p>
+                    <p className="text-xs text-gray-500">{item.date}</p>
                   </div>
                 </div>
 
-                <p className="text-sm text-gray-700 mb-4">"{item.comment}"</p>
+                {/* Comment */}
+                <p className="text-gray-700 leading-relaxed mb-6 relative z-10">
+                  "{item.comment}"
+                </p>
 
-                <div className="flex text-yellow-400 text-lg">
+                {/* Stars */}
+                <div className="flex items-center gap-1 text-yellow-400 text-xl">
                   {Array.from({ length: item.stars }).map((_, i) => (
-                    <span key={i}>★</span>
+                    <svg
+                      key={i}
+                      className="w-5 h-5 fill-current"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+                    </svg>
                   ))}
                 </div>
               </div>
             ))}
           </div>
+
+          {/* Trust indicators */}
+          <div className="mt-12 bg-gradient-to-r from-red-50 to-orange-50 rounded-2xl p-8">
+            <div className="grid md:grid-cols-4 gap-6 text-center">
+              <div>
+                <div className="text-3xl font-bold text-red-600 mb-1">
+                  4.9/5
+                </div>
+                <div className="text-sm text-gray-600">Rating Rata-rata</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-red-600 mb-1">500+</div>
+                <div className="text-sm text-gray-600">Testimoni Positif</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-red-600 mb-1">98%</div>
+                <div className="text-sm text-gray-600">Kepuasan Member</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-red-600 mb-1">100%</div>
+                <div className="text-sm text-gray-600">Recommended</div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Section ajakan bergabung */}
-      <section
-        className="relative bg-cover bg-center py-24 md:py-32"
-        style={{
-          backgroundImage: `url(${BackgroundGabung})`,
-          backgroundRepeat: "repeat",
-          backgroundSize: "cover",
-        }}
-      >
-        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 items-center">
-          <div className="space-y-4">
-            <h2 className="text-2xl md:text-3xl font-bold text-black">
-              Bergabunglah dengan Komunitas Remaja Tengah!
-            </h2>
-            <p className="text-gray-800 text-sm md:text-base leading-relaxed">
-              Bebaskan kreativitas dan gairah teater Anda bersama kami. Jadilah
-              bagian dari sesuatu yang luar biasa!
-            </p>
+      <section className="relative py-32 overflow-hidden">
+        {/* Background Image with Overlay */}
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: "url(/src/assets/Gambar Website/bergabung.jpg)",
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/70 to-black/60"></div>
+        </div>
 
-            <div className="flex gap-4 pt-4">
-              <button className="bg-red-700 hover:bg-red-800 text-white px-6 py-2 rounded-md transition duration-300 font-semibold">
-                Mendaftar
-              </button>
-              <button className="bg-gray-300 hover:bg-gray-400 text-black px-6 py-2 rounded-md transition duration-300 font-semibold">
-                Pelajari Lebih Lanjut
-              </button>
+        {/* Content */}
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Left Content */}
+            <div className="text-white">
+              <div className="inline-block bg-red-600 px-4 py-2 rounded-full text-sm font-semibold mb-6 animate-pulse">
+                🎬 Daftar Sekarang • Gratis
+              </div>
+
+              <h2 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+                Bergabunglah dengan{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">
+                  Komunitas Remaja Tengah!
+                </span>
+              </h2>
+
+              <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+                Bebaskan kreativitas dan gairah teater Anda bersama kami.
+                Jadilah bagian dari sesuatu yang luar biasa!
+              </p>
+
+              {/* Features List */}
+              <div className="space-y-4 mb-8">
+                {[
+                  "Workshop gratis setiap minggu",
+                  "Mentoring dari profesional",
+                  "Kesempatan tampil di berbagai event",
+                  "Sertifikat & portofolio karya",
+                ].map((feature, idx) => (
+                  <div key={idx} className="flex items-center gap-3">
+                    <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
+                      <svg
+                        className="w-4 h-4 text-white"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                    <span className="text-lg">{feature}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 hover:shadow-2xl hover:shadow-red-500/50 hover:scale-105 active:scale-95 flex items-center justify-center gap-2 group">
+                  Daftar Sekarang
+                  <svg
+                    className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 7l5 5m0 0l-5 5m5-5H6"
+                    />
+                  </svg>
+                </button>
+
+                <button className="bg-white/10 backdrop-blur-sm hover:bg-white/20 border-2 border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 hover:scale-105 active:scale-95">
+                  Pelajari Lebih Lanjut
+                </button>
+              </div>
+
+              {/* Social Proof */}
+              <div className="mt-8 flex items-center gap-6">
+                <div className="flex -space-x-3">
+                  {[1, 2, 3, 4].map((i) => (
+                    <img
+                      key={i}
+                      src={`https://ui-avatars.com/api/?name=Member+${i}&background=random&size=40`}
+                      alt={`Member ${i}`}
+                      className="w-10 h-10 rounded-full border-2 border-white"
+                    />
+                  ))}
+                </div>
+                <div className="text-sm">
+                  <div className="font-semibold">150+ Anggota Aktif</div>
+                  <div className="text-gray-400">Bergabung bulan ini</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Content - Registration Preview Card */}
+            <div className="hidden md:block">
+              <div className="bg-white rounded-3xl p-8 shadow-2xl transform hover:scale-105 transition-all duration-300">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                  Daftar Cepat
+                </h3>
+
+                <div className="space-y-4">
+                  <input
+                    type="text"
+                    placeholder="Nama Lengkap"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none transition-colors"
+                  />
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none transition-colors"
+                  />
+                  <input
+                    type="tel"
+                    placeholder="No. WhatsApp"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none transition-colors"
+                  />
+                  <select className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none transition-colors">
+                    <option>Pilih Divisi</option>
+                    <option>Akting</option>
+                    <option>Artistik</option>
+                    <option>Musik & Sound</option>
+                    <option>Produksi</option>
+                  </select>
+
+                  <button className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white py-4 rounded-xl font-bold transition-all duration-300 hover:shadow-lg active:scale-95">
+                    Kirim Pendaftaran
+                  </button>
+                </div>
+
+                <p className="text-xs text-gray-500 text-center mt-4">
+                  Dengan mendaftar, Anda menyetujui{" "}
+                  <a href="#" className="text-red-600 hover:underline">
+                    Syarat & Ketentuan
+                  </a>
+                </p>
+              </div>
             </div>
           </div>
-
-          <div className="hidden md:block" />
         </div>
+
+        {/* Floating elements */}
+        <div className="absolute bottom-10 left-10 w-20 h-20 bg-red-500/20 rounded-full filter blur-xl animate-pulse"></div>
+        <div
+          className="absolute top-20 right-20 w-32 h-32 bg-orange-500/20 rounded-full filter blur-xl animate-pulse"
+          style={{ animationDelay: "1s" }}
+        ></div>
       </section>
 
       {/* Footer */}
