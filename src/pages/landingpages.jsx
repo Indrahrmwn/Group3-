@@ -16,31 +16,6 @@ export default function LandingPage() {
   });
   const [isVisible, setIsVisible] = useState(false);
 
-  // Data komentar dummy (tetap sama)
-  const comments = [
-    {
-      name: "jamaludin",
-      date: "29-maret-2024",
-      comment:
-        "Lokakarya ini telah membantu saya mengembangkan kreativitas. Saya merasa lebih percaya diri di atas panggung daripada sebelumnya!",
-      stars: 5,
-    },
-    {
-      name: "jamaludin",
-      date: "29-maret-2024",
-      comment:
-        "Lokakarya ini telah membantu saya mengembangkan kreativitas. Saya merasa lebih percaya diri di atas panggung daripada sebelumnya!",
-      stars: 5,
-    },
-    {
-      name: "jamaludin",
-      date: "29-maret-2024",
-      comment:
-        "Lokakarya ini telah membantu saya mengembangkan kreativitas. Saya merasa lebih percaya diri di atas panggung daripada sebelumnya!",
-      stars: 5,
-    },
-  ];
-
   // Fungsi untuk fetch data tiket dari API
   const fetchTickets = async () => {
     try {
@@ -303,42 +278,6 @@ export default function LandingPage() {
     },
   ];
 
-  const testimonials = [
-    {
-      name: "Andi Setiawan",
-      role: "Aktor Teater",
-      image:
-        "https://ui-avatars.com/api/?name=Andi+Setiawan&background=dc2626&color=fff&size=128",
-      date: "15 Januari 2025",
-      comment:
-        "Lokakarya ini telah membantu saya mengembangkan kreativitas. Saya merasa lebih percaya diri di atas panggung daripada sebelumnya! Pengalaman yang luar biasa.",
-      stars: 5,
-      verified: true,
-    },
-    {
-      name: "Siti Nurhaliza",
-      role: "Sutradara Muda",
-      image:
-        "https://ui-avatars.com/api/?name=Siti+Nurhaliza&background=7c3aed&color=fff&size=128",
-      date: "8 Februari 2025",
-      comment:
-        "Komunitas yang sangat supportif! Saya belajar banyak tentang directing dan leadership. Tim yang solid dan mentor yang berpengalaman membuat proses belajar menjadi menyenangkan.",
-      stars: 5,
-      verified: true,
-    },
-    {
-      name: "Budi Pratama",
-      role: "Penulis Naskah",
-      image:
-        "https://ui-avatars.com/api/?name=Budi+Pratama&background=2563eb&color=fff&size=128",
-      date: "22 Februari 2025",
-      comment:
-        "Tempat terbaik untuk mengasah skill menulis naskah drama. Workshop rutin dan feedback konstruktif sangat membantu perkembangan saya sebagai penulis.",
-      stars: 5,
-      verified: true,
-    },
-  ];
-
   return (
     <>
       {/* Hero Section */}
@@ -359,15 +298,21 @@ export default function LandingPage() {
               akting, menulis naskah, dan mementaskan karya. Tanpa syarat
               pengalaman — cukup bawa rasa ingin tahu dan keberanian.
             </p>
-            <button
-              className=" bg-red-700 text-white px-6 py-2 rounded-md w-fit mt-4
+           <button
+          onClick={() => {
+          const target = document.getElementById("daftar-section");
+          if (target) {
+          target.scrollIntoView({ behavior: "smooth" });
+       }
+    }}
+        className=" bg-red-700 text-white px-6 py-2 rounded-md w-fit mt-4
         transition-all duration-300 ease-out
         font-bold
         hover:scale-105 hover:shadow-lg hover:bg-red-400
         focus:outline-none active:scale-95"
-            >
-              Bergabung Sekarang
-            </button>
+   >
+       Bergabung Sekarang
+       </button>
           </div>
         </div>
       </section>
@@ -780,145 +725,10 @@ export default function LandingPage() {
             </div>
           )}
         </div>
-
-        {/* Komentar User */}
-        <div className="max-w-7xl mx-auto px-6 mt-20">
-          {/* Header */}
-          <div className="flex flex-col md:flex-row justify-between items-center mb-12">
-            <div>
-              <div className="inline-block bg-red-100 text-red-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
-                ⭐ Testimonials
-              </div>
-              <h2 className="text-4xl font-bold text-gray-900 mb-2">
-                Apa Kata Mereka?
-              </h2>
-              <p className="text-gray-600 text-lg">
-                Cerita inspiratif dari anggota komunitas kami
-              </p>
-            </div>
-            <Link
-              to="/detailkomentar"
-              className="mt-6 md:mt-0 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-red-500/50 flex items-center gap-2 group"
-            >
-              Lihat Semua Testimoni
-              <svg
-                className="w-5 h-5 group-hover:translate-x-1 transition-transform"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 7l5 5m0 0l-5 5m5-5H6"
-                />
-              </svg>
-            </Link>
-          </div>
-
-          {/* Testimonials Grid */}
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((item, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 p-8 border border-gray-100 relative overflow-hidden group"
-              >
-                {/* Quote decoration */}
-                <div className="absolute top-4 right-4 text-red-100 opacity-50 group-hover:opacity-100 transition-opacity">
-                  <svg
-                    className="w-16 h-16"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                  </svg>
-                </div>
-
-                {/* Profile */}
-                <div className="flex items-center gap-4 mb-6 relative z-10">
-                  <div className="relative">
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-16 h-16 rounded-full ring-4 ring-red-100 group-hover:ring-red-200 transition-all"
-                    />
-                    {item.verified && (
-                      <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center ring-2 ring-white">
-                        <svg
-                          className="w-4 h-4 text-white"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </div>
-                    )}
-                  </div>
-                  <div>
-                    <p className="font-bold text-gray-900 text-lg">
-                      {item.name}
-                    </p>
-                    <p className="text-sm text-red-600 font-medium">
-                      {item.role}
-                    </p>
-                    <p className="text-xs text-gray-500">{item.date}</p>
-                  </div>
-                </div>
-
-                {/* Comment */}
-                <p className="text-gray-700 leading-relaxed mb-6 relative z-10">
-                  "{item.comment}"
-                </p>
-
-                {/* Stars */}
-                <div className="flex items-center gap-1 text-yellow-400 text-xl">
-                  {Array.from({ length: item.stars }).map((_, i) => (
-                    <svg
-                      key={i}
-                      className="w-5 h-5 fill-current"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
-                    </svg>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Trust indicators */}
-          <div className="mt-12 bg-gradient-to-r from-red-50 to-orange-50 rounded-2xl p-8">
-            <div className="grid md:grid-cols-4 gap-6 text-center">
-              <div>
-                <div className="text-3xl font-bold text-red-600 mb-1">
-                  4.9/5
-                </div>
-                <div className="text-sm text-gray-600">Rating Rata-rata</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-red-600 mb-1">500+</div>
-                <div className="text-sm text-gray-600">Testimoni Positif</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-red-600 mb-1">98%</div>
-                <div className="text-sm text-gray-600">Kepuasan Member</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-red-600 mb-1">100%</div>
-                <div className="text-sm text-gray-600">Recommended</div>
-              </div>
-            </div>
-          </div>
-        </div>
       </section>
 
-      {/* Section ajakan bergabung */}
-      <section className="relative py-32 overflow-hidden">
+     {/* Section ajakan bergabung */}
+     <section id="daftar-section" className="relative py-32 overflow-hidden">
         {/* Background Image with Overlay */}
         <div
           className="absolute inset-0 bg-cover bg-center"
