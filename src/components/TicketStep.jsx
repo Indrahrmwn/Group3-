@@ -147,9 +147,9 @@ export default function TicketStep({ onNext }) {
                   className="w-full border rounded-md px-3 py-2 text-sm appearance-none pr-8"
                 >
                   <option value="">Pilih Sesi</option>
-                  <option value="Pagi-Siang">Pagi-Siang</option>
+                  {/* <option value="Pagi-Siang">Pagi-Siang</option>
                   <option value="Siang-Sore">Siang-Sore</option>
-                  <option value="Malam">Malam</option>
+                  <option value="Malam">Malam</option> */}
                 </select>
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
                   ▼

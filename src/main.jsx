@@ -9,7 +9,7 @@ import PaymentPage from "./pages/PaymentPage";
 import About from './pages/About';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import DetailKomentar from './pages/DetailKomentar';
+// import DetailKomentar from './pages/DetailKomentar';
 import Profile from './pages/profile.jsx';
 import AuthCallback from './pages/AuthCallback';
 import { AuthProvider } from './context/AuthContext';
@@ -35,7 +35,7 @@ function AppRoutes() {
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/detailkomentar" element={<DetailKomentar />} />
+        {/* <Route path="/detailkomentar" element={<DetailKomentar />} /> */}
         <Route path="/profile" element={<Profile />} />
         <Route path="/auth/callback" element={<AuthCallback />} />
         <Route path="/detail-ticket" element={<DetailTicket />} />
