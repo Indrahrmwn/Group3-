@@ -12,12 +12,6 @@ export default function TicketStep({ onNext }) {
 
   // Fetch tickets dari API
   useEffect(() => {
-      console.log("🎫 Props preSelectedTicketId:", preSelectedTicketId);
-    }, [preSelectedTicketId]);
-  useEffect(() => {
-    fetchTickets();
-  }, []);
-
     const fetchTickets = async () => {
       try {
         setLoading(true);
@@ -31,32 +25,51 @@ export default function TicketStep({ onNext }) {
             console.log("🔍 Looking for ticket with ID:", preSelectedTicketId);
             const preSelected = data.data.find(t => t.id === parseInt(preSelectedTicketId));
             console.log("✅ Found ticket:", preSelected);
-            setSelectedTicket(preSelected || data.data[0]);
+            if (preSelected) {
+              setSelectedTicket(preSelected);
+            } else {
+              console.log("⚠️ Ticket not found, using first ticket");
+              setSelectedTicket(data.data[0]);
+            }
           } else {
-            console.log("⚠️ No preSelectedTicketId, using first ticket");
+            console.log("ℹ️ No preSelectedTicketId, using first ticket");
             setSelectedTicket(data.data[0]);
           }
         }
       } catch (error) {
-        console.error('Error fetching tickets:', error);
+        console.error('❌ Error fetching tickets:', error);
       } finally {
         setLoading(false);
       }
     };
-  
 
+    fetchTickets();
+  }, [preSelectedTicketId]);
+
+  // ✅ PERBAIKAN UTAMA: Kirim data setiap ada perubahan
   useEffect(() => {
-  if (selectedTicket && session && quantity > 0) {
-    onNext?.({
-      ticketId: selectedTicket.id,
-      ticketName: selectedTicket.ticket_name,
-      price: selectedTicket.price,
+    console.log("🔄 Data changed:", {
+      selectedTicket: selectedTicket?.ticket_name,
       session,
-      quantity,
-      total: selectedTicket.price * quantity
+      quantity
     });
-  }
-}, [selectedTicket, session, quantity, onNext]); // ❌ onNext berubah setiap render!
+
+    if (selectedTicket) {
+      // Kirim data bahkan jika session kosong atau quantity 0
+      // Biarkan parent component yang handle validasi
+      const orderData = {
+        ticketId: selectedTicket.id,
+        ticketName: selectedTicket.ticket_name,
+        price: selectedTicket.price,
+        session: session || null,
+        quantity: quantity,
+        total: selectedTicket.price * quantity
+      };
+
+      console.log("📤 Sending data to parent:", orderData);
+      onNext?.(orderData);
+    }
+  }, [selectedTicket, session, quantity]); // ✅ Hapus onNext dari dependency
 
   if (loading) {
     return (
@@ -81,9 +94,10 @@ export default function TicketStep({ onNext }) {
         value={selectedTicket?.id || ""}
         onChange={(e) => {
           const ticket = tickets.find(t => t.id === parseInt(e.target.value));
+          console.log("🎫 Ticket selected:", ticket?.ticket_name);
           setSelectedTicket(ticket);
-          setQuantity(0);
-          setSession("");
+          setQuantity(1); // ✅ Set default quantity ke 1
+          setSession(""); // Reset session
         }}
         className="w-full rounded-full px-4 py-2 text-sm bg-white text-gray-700"
       >
@@ -137,19 +151,20 @@ export default function TicketStep({ onNext }) {
                 <p className="text-xs text-gray-600">{selectedTicket.description}</p>
               )}
 
-              
-
               {/* Input sesi */}
               <div className="relative w-full">
                 <select
                   value={session}
-                  onChange={(e) => setSession(e.target.value)}
+                  onChange={(e) => {
+                    console.log("📅 Session selected:", e.target.value);
+                    setSession(e.target.value);
+                  }}
                   className="w-full border rounded-md px-3 py-2 text-sm appearance-none pr-8"
                 >
                   <option value="">Pilih Sesi</option>
-                  {/* <option value="Pagi-Siang">Pagi-Siang</option>
+                  <option value="Pagi-Siang">Pagi-Siang</option>
                   <option value="Siang-Sore">Siang-Sore</option>
-                  <option value="Malam">Malam</option> */}
+                  <option value="Malam">Malam</option>
                 </select>
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
                   ▼
@@ -159,7 +174,11 @@ export default function TicketStep({ onNext }) {
               {/* Counter tiket */}
               <div className="flex items-center gap-3">
                 <button
-                  onClick={() => setQuantity(Math.max(0, quantity - 1))}
+                  onClick={() => {
+                    const newQty = Math.max(0, quantity - 1);
+                    console.log("➖ Quantity decreased to:", newQty);
+                    setQuantity(newQty);
+                  }}
                   className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
                 >
                   -
@@ -169,7 +188,9 @@ export default function TicketStep({ onNext }) {
                   onClick={() => {
                     const maxAvailable = selectedTicket.quantity_available - selectedTicket.quantity_sold;
                     if (quantity < maxAvailable) {
-                      setQuantity(quantity + 1);
+                      const newQty = quantity + 1;
+                      console.log("➕ Quantity increased to:", newQty);
+                      setQuantity(newQty);
                     }
                   }}
                   className="px-3 py-1 bg-green-500 text-white rounded-md hover:bg-green-600"

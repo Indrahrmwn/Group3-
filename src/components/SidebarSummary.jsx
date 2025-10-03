@@ -30,7 +30,7 @@ export default function OrderSummary() {
         {step === 1 && (
           <div className="space-y-3 max-w-[300px] mx-auto">
             <div>
-              <p className="text-gray-500">Weekend Ticket</p>
+              <p className="text-gray-500">Tanggal</p>
               <p className="font-medium">Teater Sukabumi Gokil</p>
             </div>
             <div className="border-t border-b py-2">

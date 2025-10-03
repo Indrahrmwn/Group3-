@@ -21,8 +21,6 @@ export default function LandingPage() {
     try {
       setLoading(true);
       setError(null);
-
-      // URL API - ganti sesuai dengan port Laravel Anda
       const apiUrl = "http://localhost:8000/api/tickets";
       console.log("Fetching from:", apiUrl);
 

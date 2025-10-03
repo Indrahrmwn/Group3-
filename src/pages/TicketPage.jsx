@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react"; // Tambah useCallback
+import { useState, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Menu } from "lucide-react";
 import TicketStep from "../components/TicketStep";
@@ -10,15 +10,26 @@ export default function TicketPage() {
   
   const preSelectedTicketId = searchParams.get('ticketId');
 
-  // ✅ Wrap dengan useCallback agar function tidak berubah setiap render
   const handleTicketDataChange = useCallback((data) => {
-    console.log("Data tiket:", data);
+    console.log("✅ Data tiket diterima:", data);
     setOrderData(data);
-  }, []); // Dependency array kosong karena tidak depend pada state/props lain
+  }, []);
 
   const handleProceedToPayment = () => {
-    if (!orderData || !orderData.session || orderData.quantity === 0) {
-      alert("Mohon lengkapi semua data tiket (sesi dan jumlah tiket)!");
+    // Validasi lebih fleksibel - hanya cek apakah ada data tiket dan quantity > 0
+    if (!orderData) {
+      alert("Mohon pilih tiket terlebih dahulu!");
+      return;
+    }
+
+    if (orderData.quantity === 0) {
+      alert("Jumlah tiket tidak boleh 0!");
+      return;
+    }
+
+    // Session bisa optional tergantung apakah tiket memerlukan sesi atau tidak
+    if (orderData.requiresSession && !orderData.session) {
+      alert("Mohon pilih sesi terlebih dahulu!");
       return;
     }
 
@@ -72,11 +83,13 @@ export default function TicketPage() {
                 <p className="font-bold text-black">{orderData.ticketName}</p>
               </div>
 
-              {/* Sesi */}
-              <div>
-                <p className="text-gray-500 text-xs mb-1">Sesi</p>
-                <p className="font-semibold text-black">{orderData.session || '-'}</p>
-              </div>
+              {/* Sesi - Hanya tampilkan jika ada */}
+              {orderData.session && (
+                <div>
+                  <p className="text-gray-500 text-xs mb-1">Sesi</p>
+                  <p className="font-semibold text-black">{orderData.session}</p>
+                </div>
+              )}
 
               {/* Jumlah Tiket */}
               <div>
@@ -108,16 +121,16 @@ export default function TicketPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
               </svg>
             </div>
-            <p className="text-gray-400 text-xs">Pilih tiket, sesi,<br/>dan jumlah untuk melihat ringkasan</p>
+            <p className="text-gray-400 text-xs">Pilih tiket dan jumlah<br/>untuk melihat ringkasan</p>
           </div>
         )}
 
-        {/* Tombol */}
+        {/* Tombol - Validasi lebih sederhana */}
         <button
           onClick={handleProceedToPayment}
-          disabled={!orderData || !orderData.session || orderData.quantity === 0}
+          disabled={!orderData || orderData.quantity === 0}
           className={`w-full py-2 rounded-md text-sm font-semibold transition-all duration-200 ${
-            orderData && orderData.session && orderData.quantity > 0
+            orderData && orderData.quantity > 0
               ? 'bg-red-600 text-white hover:bg-red-700 hover:shadow-lg active:scale-95'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
@@ -125,11 +138,11 @@ export default function TicketPage() {
           Pilih Metode Pembayaran
         </button>
 
-        {/* Warning message */}
-        {orderData && (!orderData.session || orderData.quantity === 0) && (
+        {/* Warning message - Hanya tampilkan jika quantity 0 */}
+        {orderData && orderData.quantity === 0 && (
           <div className="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded-md">
             <p className="text-xs text-yellow-700 text-center">
-              ⚠️ Lengkapi data di sebelah kiri untuk melanjutkan
+              ⚠️ Pilih jumlah tiket untuk melanjutkan
             </p>
           </div>
         )}
