@@ -16,6 +16,7 @@ import { AuthProvider } from './context/AuthContext';
 import DetailTicket from './pages/DetailTicket.jsx';
 import TiketUser from './pages/ticketuser.jsx';
 import ContactPage from './pages/Contact.jsx';
+import InvocePage from './pages/InvoicePage.jsx';
 
 function AppRoutes() {
   const location = useLocation();
@@ -42,6 +43,7 @@ function AppRoutes() {
         <Route path="/detail-ticket" element={<DetailTicket />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/ticket-user" element={<TiketUser />} />
+        <Route path="/invoice" element={<InvocePage />} />
       </Routes>
     </>
   );
