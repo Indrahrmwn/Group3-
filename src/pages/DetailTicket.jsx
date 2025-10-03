@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
+
 export default function DetailTicket() {
    // Fetch tickets dari API
   const fetchTickets = async () => {
@@ -360,7 +361,7 @@ export default function DetailTicket() {
                             disabled={(ticket.quantity_available || ticket.stock) === 0}
                             onClick={() => {
                               if ((ticket.quantity_available || ticket.stock) > 0) {
-                                console.log(`Tiket ${ticket.id} dipilih`);
+                                navigate(`/ticket?ticketId=${ticket.id}}`);
                                 // Navigate to checkout atau buka modal pembayaran
                               }
                             }}

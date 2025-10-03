@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export default function PaymentPage() {
   const navigate = useNavigate();
@@ -8,17 +9,19 @@ export default function PaymentPage() {
   const [showQR, setShowQR] = useState(false);
   const [countdown, setCountdown] = useState(600); // 10 minutes
   const [paymentConfirmed, setPaymentConfirmed] = useState(false);
+  const location = useLocation();
+  const ticketOrder = location.state?.ticketOrder;
+  
 
   useEffect(() => {
-    // Get order data from sessionStorage
-    const storedOrder = sessionStorage.getItem('ticketOrder');
-    if (storedOrder) {
-      setOrderData(JSON.parse(storedOrder));
-    } else {
-      // Redirect back if no order data
-      navigate('/ticket');
-    }
-  }, [navigate]);
+  // Get order data from navigation state
+  if (ticketOrder) {
+    setOrderData(ticketOrder);
+  } else {
+    // Redirect back if no order data
+    navigate('/ticket');
+  }
+}, [ticketOrder, navigate]);
 
   // Countdown timer for QR payment
   useEffect(() => {
@@ -87,7 +90,7 @@ export default function PaymentPage() {
   const handleConfirmPayment = () => {
     setPaymentConfirmed(true);
     setTimeout(() => {
-      navigate('/success');
+      navigate('/ticket-user', { state: { orderData } });
     }, 1500);
   };
 
