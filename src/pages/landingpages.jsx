@@ -16,6 +16,22 @@ export default function LandingPage() {
   });
   const [isVisible, setIsVisible] = useState(false);
 
+   const getImageUrl = (imagePath) => {
+    if (!imagePath) return "/default-ticket-image.jpg";
+    
+    if (imagePath.startsWith('http')) {
+      return imagePath;
+    }
+    
+    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/tickets';
+    
+    if (imagePath.startsWith('storage/')) {
+      return `${baseUrl}/${imagePath}`;
+    }
+    
+    return `${baseUrl}/${imagePath}`;
+  };
+
   // Fungsi untuk fetch data tiket dari API
   const fetchTickets = async () => {
     try {
@@ -555,7 +571,7 @@ export default function LandingPage() {
                   {/* Header dengan gambar */}
                   <div className="relative h-48 overflow-hidden">
                     <img
-                      src={ticket.image_url || "/default-ticket-image.jpg"}
+                      src={getImageUrl(ticket.image_url)}
                       alt={ticket.ticket_name || ticket.title}
                       className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                       onError={(e) => {
