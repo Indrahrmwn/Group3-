@@ -18,6 +18,8 @@ import TiketUser from './pages/ticketuser.jsx';
 import ContactPage from './pages/Contact.jsx';
 import InvocePage from './pages/InvoicePage.jsx';
 import DivisionPage from './pages/Division.jsx';
+import SuccessPage from './pages/SuccessPage.jsx';
+// import TiketUser from './pages/ticketuser.jsx';
 
 function AppRoutes() {
   const location = useLocation();
@@ -46,6 +48,9 @@ function AppRoutes() {
         <Route path="/ticket-user" element={<TiketUser />} />
         <Route path="/invoice" element={<InvocePage />} />
         <Route path="/division" element={<DivisionPage />} />
+        <Route path="/SuccessPage" element={<SuccessPage />} />
+        <Route path="/ticket-user" element={<TiketUser />} />
+        
       </Routes>
     </>
   );

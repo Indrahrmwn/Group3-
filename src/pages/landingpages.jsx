@@ -19,7 +19,7 @@ export default function LandingPage() {
    const getImageUrl = (imagePath) => {
     if (!imagePath) return "/default-ticket-image.jpg";
     
-    if (imagePath.startsWith('http')) {
+    if (imagePath.startsWith('http://localhost:8000')) {
       return imagePath;
     }
     
