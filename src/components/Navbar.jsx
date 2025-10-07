@@ -194,7 +194,7 @@ export default function Navbar({ transparent = false }) {
                   </Link>
                   
                   <Link
-                    to="/divisi"
+                    to="/division"
                     className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 hover:text-red-700 transition-all duration-200 group"
                     onClick={() => setAboutDropdownOpen(false)}
                   >

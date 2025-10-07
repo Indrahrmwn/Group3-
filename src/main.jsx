@@ -17,6 +17,7 @@ import DetailTicket from './pages/DetailTicket.jsx';
 import TiketUser from './pages/ticketuser.jsx';
 import ContactPage from './pages/Contact.jsx';
 import InvocePage from './pages/InvoicePage.jsx';
+import DivisionPage from './pages/Division.jsx';
 
 function AppRoutes() {
   const location = useLocation();
@@ -44,6 +45,7 @@ function AppRoutes() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/ticket-user" element={<TiketUser />} />
         <Route path="/invoice" element={<InvocePage />} />
+        <Route path="/division" element={<DivisionPage />} />
       </Routes>
     </>
   );
