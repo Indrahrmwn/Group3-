@@ -125,7 +125,7 @@ export default function Register() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="w-full h-10 bg-white rounded-lg px-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-300 shadow"
-                placeholder="spiderman123"
+                placeholder="Masukan Username Anda"
                 required
               />
             </div>
@@ -140,7 +140,7 @@ export default function Register() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full h-10 bg-white rounded-lg px-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-300 shadow"
-                placeholder="spiderman@gmail.com"
+                placeholder="Masukan Email Anda"
                 required
               />
             </div>
@@ -155,7 +155,7 @@ export default function Register() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full h-10 bg-white rounded-lg px-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-300 shadow"
-                placeholder="••••••••"
+                placeholder="Masukan Password Anda"
                 required
               />
             </div>
@@ -170,7 +170,7 @@ export default function Register() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="w-full h-10 bg-white rounded-lg px-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-300 shadow"
-                placeholder="••••••••"
+                placeholder="Verifikasi Password Anda"
                 required
               />
             </div>
