@@ -108,7 +108,7 @@ export default function Login() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full h-10 bg-white rounded-lg px-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-300 shadow"
-                placeholder="spiderman@gmail.com"
+                placeholder="Masukan Email Anda"
                 required
               />
             </div>
@@ -123,7 +123,7 @@ export default function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full h-10 bg-white rounded-lg px-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-300 shadow"
-                placeholder="••••••••"
+                placeholder="Masukan Password Anda"
                 required
               />
             </div>
